@@ -9,7 +9,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Connehealth Web API</name>
-    <description>Connehealth's REST web services with spring, jersey and mybatis on a tomcat server</description>
+    <description>ConneHealth's REST web services with spring, jersey and mybatis on a tomcat server</description>
 
 
     <properties>
