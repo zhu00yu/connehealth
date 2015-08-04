@@ -1,0 +1,44 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd
+
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.connehealth.*" />
+
+    <!--
+        Instruct Spring to perform declarative transaction management
+        automatically on annotated classes.
+    -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager" depends-on="dataSource">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- For MySQL DataSource 部署在服务器端时使用 -->
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" scope="singleton">
+        <property name="jndiName" value="java:comp/env/jdbc/restDemoDB" />
+        <property name="resourceRef" value="true" />
+    </bean>
+
+    <!-- For SQLite DataSource 开发时使用的数据库，可以通过文件共享数据库 -->
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        &lt;!&ndash; 指定连接数据库的驱动 &ndash;&gt;
+        <property name="driverClassName" value="org.sqlite.JDBC" />
+        &lt;!&ndash; 指定连接数据库的URL 这里必须是绝对路径 &ndash;&gt;
+        <property name="url" value="jdbc:sqlite://C:/Users/zhuyu/IdeaProjects/connehealth/src/main/resources/input_data/my-dev-db.sqlite" />
+    </bean>-->
+</beans>
