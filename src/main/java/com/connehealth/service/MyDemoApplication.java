@@ -20,6 +20,7 @@ public class MyDemoApplication extends ResourceConfig {
     public MyDemoApplication(){
         register(RequestContextFilter.class);
         register(UserRestService.class);
+        register(UserProfileRestService.class);
         register(PodcastRestService.class);
         register(JacksonFeature.class);
         register(LoggingResponseFilter.class);

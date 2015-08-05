@@ -17,13 +17,22 @@
 		http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- =============== MyBATIS beans configuration ================== -->
-    <bean id="podcastDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-        <property name="mapperInterface" value="com.connehealth.dao.PodcastDao" />
-    </bean>
-
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" depends-on="dataSource">
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="classpath:config/mybatisV3.xml"/>
     </bean>
+
+    <bean id="podcastDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="com.connehealth.dao.PodcastDao" />
+    </bean>
+    <bean id="userProfileDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="com.connehealth.dao.UserProfileDao" />
+    </bean>
+    <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="com.connehealth.dao.UserDao" />
+    </bean>
+
 </beans>

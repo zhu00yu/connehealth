@@ -6,6 +6,9 @@ import java.security.NoSuchAlgorithmException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.codec.Hex;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.HttpHeaders;
+
 
 public class TokenUtils
 {
@@ -62,6 +65,20 @@ public class TokenUtils
     }
 
 
+    public static String getUserNameFromToken(HttpServletRequest httpRequest)
+    {
+        String authToken = getAuthToken(httpRequest);
+        return getUserNameFromToken(authToken);
+    }
+
+
+    public static String getUserNameFromToken(HttpHeaders headers)
+    {
+        String authToken = getAuthToken(headers);
+        return getUserNameFromToken(authToken);
+    }
+
+
     public static boolean validateToken(String authToken, UserDetails userDetails)
     {
         String[] parts = authToken.split(":");
@@ -74,4 +91,34 @@ public class TokenUtils
 
         return signature.equals(TokenUtils.computeSignature(userDetails, expires));
     }
+
+
+    public static String getAuthToken(HttpServletRequest httpRequest, String headerKey){
+        String authToken = httpRequest.getHeader(headerKey == null ? "" : headerKey);
+        return authToken;
+    }
+    public static String getAuthToken(HttpServletRequest httpRequest){
+        String authToken = getAuthToken(httpRequest, "X-Auth-Token");
+		/* If token not found get it from request parameter */
+        if (authToken == null) {
+            authToken = getAuthToken(httpRequest, "token");
+        }
+
+        return authToken;
+    }
+    public static String getAuthToken(HttpHeaders headers){
+        String authToken = getAuthToken(headers, "X-Auth-Token");
+
+		/* If token not found get it from request parameter */
+        if (authToken == null) {
+            authToken = getAuthToken(headers, "token");
+        }
+
+        return authToken;
+    }
+    public static String getAuthToken(HttpHeaders headers, String headerKey){
+        String authToken = headers.getHeaderString(headerKey == null ? "" : headerKey);
+        return authToken;
+    }
+
 }

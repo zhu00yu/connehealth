@@ -1,0 +1,156 @@
+package com.connehealth.service;
+
+import com.connehealth.dao.PodcastDao;
+import com.connehealth.dao.UserDao;
+import com.connehealth.dao.UserProfileDao;
+import com.connehealth.entities.Podcast;
+import com.connehealth.entities.User;
+import com.connehealth.entities.UserProfile;
+import com.connehealth.security.TokenUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+
+/**
+ *
+ * Service class that handles REST requests
+ * @author amacoder
+ *
+ */
+@Component
+@Path("/user-profiles")
+public class UserProfileRestService extends BaseRestService {
+
+    @Autowired
+    private UserProfileDao userProfileDao;
+    public void setUserProfileDao(UserProfileDao userProfileDao) {
+        this.userProfileDao = userProfileDao;
+    }
+    @Autowired
+    private UserDao userDao;
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    private User getCurrentUser(){
+        String name = getCurrentUserName();
+        User user = userDao.getUserByUserName(name);
+
+        return user;
+    }
+
+    /************************************ CREATE ************************************/
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.TEXT_HTML})
+    @Transactional
+    public Response createUserProfile(UserProfile model) {
+        userProfileDao.createUserProfile(model);
+
+        return Response.status(201).entity("A new user-profile/resource has been created").build();
+    }
+
+    @POST @Path("list")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Response createUserProfiles(List<UserProfile> model) {
+        for(UserProfile profile : model){
+            userProfileDao.createUserProfile(profile);
+        }
+
+        return Response.status(204).build();
+    }
+
+    /************************************ READ ************************************/
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public List<UserProfile> getUserProfiles(@Context HttpHeaders headers) {
+        try {
+            String name = TokenUtils.getUserNameFromToken(headers);
+            User user = userDao.getUserByUserName(name);
+            if (user ==  null){
+                return null;
+            }
+        }catch (Exception ex){
+            String msg = ex.getMessage();
+        }
+
+        return userProfileDao.getUserProfiles();
+    }
+
+    @GET @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response findById(@PathParam("id") Long id) {
+        UserProfile profile = userProfileDao.getUserProfileById(id);
+        if(profile != null) {
+            return Response.status(200).entity(profile).build();
+        } else {
+            return Response.status(404).entity("The user profile with the id " + id + " does not exist").build();
+        }
+    }
+
+
+    /************************************ UPDATE ************************************/
+    @PUT @Path("{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.TEXT_HTML})
+    @Transactional
+    public Response updateUserProfileById(@PathParam("id") Long id, UserProfile model) {
+        if(model.getId() == null) model.setId(id);
+        String message;
+        int status;
+        if(userProfileWasUpdated(model)){
+            status = 200; //OK
+            message = "User profile has been updated";
+        } else if(userProfileCanBeCreated(model)){
+            userProfileDao.createUserProfile(model);
+            status = 201; //Created
+            message = "The user profile you provided has been added to the database";
+        } else {
+            status = 406; //Not acceptable
+            message = "Failed to update the user profile data to the database";
+        }
+
+        return Response.status(status).entity(message).build();
+    }
+
+    private boolean userProfileWasUpdated(UserProfile profile) {
+        return userProfileDao.updateUserProfile(profile) == 1;
+    }
+
+    private boolean userProfileCanBeCreated(UserProfile profile) {
+        return true;
+    }
+
+    /************************************ DELETE ************************************/
+    @DELETE @Path("{id}")
+    @Produces({MediaType.TEXT_HTML})
+    @Transactional
+    public Response deleteUserProfileById(@PathParam("id") Long id) {
+        if(userProfileDao.deleteUserProfileById(id) == 1){
+            return Response.status(204).build();
+        } else {
+            return Response.status(404).entity("User profile with the id " + id + " is not present in the database").build();
+        }
+    }
+
+    @DELETE
+    @Produces({MediaType.TEXT_HTML})
+    @Transactional
+    public Response deleteUserProfiles() {
+        userProfileDao.deleteUserProfiles();
+        return Response.status(200).entity("All user profiles have been successfully removed").build();
+    }
+
+
+
+}
+

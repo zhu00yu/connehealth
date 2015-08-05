@@ -33,10 +33,16 @@
             authentication-manager-ref="authenticationManager">
         <security:custom-filter ref="authenticationTokenProcessingFilter" position="FORM_LOGIN_FILTER" />
         <security:intercept-url pattern="/rest/user/authenticate" access="permitAll" />
+
         <security:intercept-url method="GET" pattern="/rest/podcasts/**" access="hasRole('ROLE_USER')" />
         <security:intercept-url method="PUT" pattern="/rest/podcasts/**" access="hasRole('ROLE_ADMIN')" />
         <security:intercept-url method="POST" pattern="/rest/podcasts/**" access="hasRole('ROLE_ADMIN')" />
         <security:intercept-url method="DELETE" pattern="/rest/podcasts/**" access="hasRole('ROLE_ADMIN')" />
+
+        <security:intercept-url method="GET" pattern="/rest/user-profiles/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/user-profiles/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/user-profiles/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/user-profiles/**" access="hasRole('ROLE_USER')" />
     </security:http>
     <bean id="unauthorizedEntryPoint" class="com.connehealth.security.UnauthorizedEntryPoint" />
 

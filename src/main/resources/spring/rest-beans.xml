@@ -19,4 +19,10 @@
     <bean id="podcastRestService" class="com.connehealth.service.PodcastRestService"  depends-on="podcastDao">
         <property name="podcastDao" ref="podcastDao"/>
     </bean>
+
+    <bean id="userProfileRestService" class="com.connehealth.service.UserProfileRestService"  depends-on="userProfileDao">
+        <property name="userProfileDao" ref="userProfileDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
 </beans>

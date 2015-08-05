@@ -1,0 +1,30 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.UserDao">
+
+    <resultMap id="userMap" type="User" >
+        <id column="user_id" property="userId"  />
+        <result column="username" property="userName" />
+        <collection property="authorities" column="username" javaType="ArrayList" ofType="String" select="getAuthorityByUserName"/>
+    </resultMap>
+
+
+    <!-- ************** READ ************** -->
+    <select id="getUsers" resultMap="userMap">
+        SELECT * FROM users
+    </select>
+
+    <select id="getUserById" resultMap="userMap" parameterType="Long">
+        SELECT * FROM users WHERE user_id=#{value};
+    </select>
+
+    <select id="getUserByUserName" resultMap="userMap" parameterType="String">
+        SELECT * FROM users WHERE username=#{value};
+    </select>
+
+    <select id="getAuthorityByUserName" parameterType="String" resultType="String">
+        SELECT authority FROM authorities WHERE username=#{username}
+    </select>
+
+</mapper>
