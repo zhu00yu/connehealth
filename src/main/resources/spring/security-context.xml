@@ -34,6 +34,11 @@
         <security:custom-filter ref="authenticationTokenProcessingFilter" position="FORM_LOGIN_FILTER" />
         <security:intercept-url pattern="/rest/user/authenticate" access="permitAll" />
 
+        <security:intercept-url method="GET" pattern="/rest/master/**" access="permitAll" />
+        <security:intercept-url method="PUT" pattern="/rest/master/**" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url method="POST" pattern="/rest/master/**" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url method="DELETE" pattern="/rest/master/**" access="hasRole('ROLE_ADMIN')" />
+
         <security:intercept-url method="GET" pattern="/rest/podcasts/**" access="hasRole('ROLE_USER')" />
         <security:intercept-url method="PUT" pattern="/rest/podcasts/**" access="hasRole('ROLE_ADMIN')" />
         <security:intercept-url method="POST" pattern="/rest/podcasts/**" access="hasRole('ROLE_ADMIN')" />
@@ -43,6 +48,36 @@
         <security:intercept-url method="PUT" pattern="/rest/user-profiles/**" access="hasRole('ROLE_USER')" />
         <security:intercept-url method="POST" pattern="/rest/user-profiles/**" access="hasRole('ROLE_USER')" />
         <security:intercept-url method="DELETE" pattern="/rest/user-profiles/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/practices/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/practices/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/practices/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/practices/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/practice-files/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/practice-files/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/practice-files/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/practice-files/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/providers/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/providers/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/providers/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/providers/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/employees/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/employees/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/employees/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/employees/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/patients/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/patients/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/patients/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/patients/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/patient-files/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/patient-files/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/patient-files/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/patient-files/**" access="hasRole('ROLE_USER')" />
     </security:http>
     <bean id="unauthorizedEntryPoint" class="com.connehealth.security.UnauthorizedEntryPoint" />
 

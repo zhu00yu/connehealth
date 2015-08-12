@@ -5,13 +5,27 @@
 
 <configuration>
     <typeAliases>
+        <typeAlias type="com.connehealth.entities.MasterData" alias="MasterData"/>
         <typeAlias type="com.connehealth.entities.User" alias="User"/>
         <typeAlias type="com.connehealth.entities.Podcast" alias="Podcast"/>
         <typeAlias type="com.connehealth.entities.UserProfile" alias="UserProfile"/>
+        <typeAlias type="com.connehealth.entities.Practice" alias="Practice"/>
+        <typeAlias type="com.connehealth.entities.PracticeFile" alias="PracticeFile"/>
+        <typeAlias type="com.connehealth.entities.Provider" alias="Provider"/>
+        <typeAlias type="com.connehealth.entities.Employee" alias="Employee"/>
+        <typeAlias type="com.connehealth.entities.Patient" alias="Patient"/>
+        <typeAlias type="com.connehealth.entities.PatientFile" alias="PatientFile"/>
     </typeAliases>
     <mappers>
+        <mapper resource="mappers/master-data.xml" />
         <mapper resource="mappers/user.xml" />
         <mapper resource="mappers/podcast.xml" />
         <mapper resource="mappers/user-profile.xml" />
+        <mapper resource="mappers/practice.xml" />
+        <mapper resource="mappers/practice-file.xml" />
+        <mapper resource="mappers/provider.xml" />
+        <mapper resource="mappers/employee.xml" />
+        <mapper resource="mappers/patient.xml" />
+        <mapper resource="mappers/patient-file.xml" />
     </mappers>
 </configuration>

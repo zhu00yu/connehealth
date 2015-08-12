@@ -1,0 +1,159 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.PatientDao">
+
+    <resultMap id="patientMap" type="Patient" >
+        <id      property="id"                column="patient_id"  />
+        <result property="createOn"       column="create_on" />
+        <result property="createBy"       column="create_by" />
+        <result property="modifyOn"       column="modify_on" />
+        <result property="modifyBy"       column="modify_by" />
+        <result property="status"         column="status" />
+
+        <result property="mrn" column="mrn" />
+        <result property="ssn" column="ssn" />
+        <result property="idNo" column="id_no" />
+        <result property="photoId" column="photo_id" />
+        <result property="familyName" column="family_name" />
+        <result property="givenName" column="given_name" />
+        <result property="patientName" column="patient_name" />
+        <result property="sex" column="sex" />
+        <result property="dob" column="dob" />
+        <result property="bloodType" column="blood_type" />
+        <result property="nationality" column="nationality" />
+        <result property="race" column="race" />
+        <result property="ethnicity" column="ethnicity" />
+        <result property="preferredLanguage" column="preferred_language" />
+        <result property="nativePlace" column="native_place" />
+        <result property="email" column="email" />
+        <result property="mobile" column="mobile" />
+        <result property="homeAddress" column="home_address" />
+        <result property="homeZip" column="home_zip" />
+        <result property="registeredAddress" column="registered_address" />
+        <result property="registeredZip" column="registered_zip" />
+        <result property="workAddress" column="work_address" />
+        <result property="workPhone" column="work_phone" />
+        <result property="workZip" column="work_zip" />
+        <result property="contactPerson" column="contact_person" />
+        <result property="contactRelationship" column="contact_relationship" />
+        <result property="contactPhone" column="contact_phone" />
+        <result property="industry" column="industry" />
+        <result property="company" column="company" />
+        <result property="maritalStatus" column="marital_status" />
+
+    </resultMap>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createPatient" parameterType="Patient" useGeneratedKeys="true">
+        INSERT
+        INTO patients
+        SET
+            patient_id=#{id}
+            create_on=#{createOn}
+            create_by=#{createBy}
+            modify_on=#{modifyOn}
+            modify_by=#{modifyBy}
+            status=#{status}
+            mrn=#{mrn}
+            ssn=#{ssn}
+            id_no=#{idNo}
+            photo_id=#{photoId}
+            family_name=#{familyName}
+            given_name=#{givenName}
+            patient_name=#{patientName}
+            sex=#{sex}
+            dob=#{dob}
+            blood_type=#{bloodType}
+            nationality=#{nationality}
+            race=#{race}
+            ethnicity=#{ethnicity}
+            preferred_language=#{preferredLanguage}
+            native_place=#{nativePlace}
+            email=#{email}
+            mobile=#{mobile}
+            home_address=#{homeAddress}
+            home_zip=#{homeZip}
+            registered_address=#{registeredAddress}
+            registered_zip=#{registeredZip}
+            work_address=#{workAddress}
+            work_phone=#{workPhone}
+            work_zip=#{workZip}
+            contact_person=#{contactPerson}
+            contact_relationship=#{contactRelationship}
+            contact_phone=#{contactPhone}
+            industry=#{industry}
+            company=#{company}
+            marital_status=#{maritalStatus}
+
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getPatients" resultMap="patientMap">
+        SELECT * FROM patients
+    </select>
+
+    <select id="getPatientById" resultMap="patientMap" parameterType="Long">
+        SELECT * FROM patients WHERE patient_id=#{value};
+    </select>
+
+    <!--<select id="getPatientByName" resultMap="PatientMap" parameterType="String">
+        SELECT * FROM Patients WHERE name=#{value};
+    </select>-->
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updatePatient" parameterType="Patient">
+        UPDATE
+            patients
+        SET
+            patient_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="status !=0">,status=#{status}</if>
+            <if test="mrn !=null">,mrn=#{mrn}</if>
+            <if test="ssn !=null">,ssn=#{ssn}</if>
+            <if test="idNo !=null">,id_no=#{idNo}</if>
+            <if test="photoId !=null">,photo_id=#{photoId}</if>
+            <if test="familyName !=null">,family_name=#{familyName}</if>
+            <if test="givenName !=null">,given_name=#{givenName}</if>
+            <if test="patientName !=null">,patient_name=#{patientName}</if>
+            <if test="sex !=null">,sex=#{sex}</if>
+            <if test="dob !=null">,dob=#{dob}</if>
+            <if test="bloodType !=null">,blood_type=#{bloodType}</if>
+            <if test="nationality !=null">,nationality=#{nationality}</if>
+            <if test="race !=null">,race=#{race}</if>
+            <if test="ethnicity !=null">,ethnicity=#{ethnicity}</if>
+            <if test="preferredLanguage !=null">,preferred_language=#{preferredLanguage}</if>
+            <if test="nativePlace !=null">,native_place=#{nativePlace}</if>
+            <if test="email !=null">,email=#{email}</if>
+            <if test="mobile !=null">,mobile=#{mobile}</if>
+            <if test="homeAddress !=null">,home_address=#{homeAddress}</if>
+            <if test="homeZip !=null">,home_zip=#{homeZip}</if>
+            <if test="registeredAddress !=null">,registered_address=#{registeredAddress}</if>
+            <if test="registeredZip !=null">,registered_zip=#{registeredZip}</if>
+            <if test="workAddress !=null">,work_address=#{workAddress}</if>
+            <if test="workPhone !=null">,work_phone=#{workPhone}</if>
+            <if test="workZip !=null">,work_zip=#{workZip}</if>
+            <if test="contactPerson !=null">,contact_person=#{contactPerson}</if>
+            <if test="contactRelationship !=null">,contact_relationship=#{contactRelationship}</if>
+            <if test="contactPhone !=null">,contact_phone=#{contactPhone}</if>
+            <if test="industry !=null">,industry=#{industry}</if>
+            <if test="company !=null">,company=#{company}</if>
+            <if test="maritalStatus !=null">,marital_status=#{maritalStatus}</if>
+        WHERE
+            patient_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deletePatientById" parameterType="Long">
+        DELETE FROM patients WHERE patient_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deletePatients">
+        TRUNCATE TABLE patients
+    </delete>
+
+</mapper>

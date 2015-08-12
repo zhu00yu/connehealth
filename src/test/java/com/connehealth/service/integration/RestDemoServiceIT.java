@@ -45,7 +45,7 @@ public class RestDemoServiceIT {
                 });
 
         ObjectMapper mapper = new ObjectMapper();
-        System.out.print(mapper.writerWithDefaultPrettyPrinter()
+        System.out.print(mapper.defaultPrettyPrintingWriter()
                 .writeValueAsString(podcasts));
 
         Assert.assertTrue("At least one podcast is present",
@@ -74,7 +74,7 @@ public class RestDemoServiceIT {
         ObjectMapper mapper = new ObjectMapper();
         System.out
                 .print("Received podcast from database *************************** "
-                        + mapper.writerWithDefaultPrettyPrinter()
+                        + mapper.defaultPrettyPrintingWriter()
                         .writeValueAsString(podcast));
 
     }

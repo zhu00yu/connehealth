@@ -1,0 +1,27 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.MasterDataDao">
+
+    <resultMap id="masterDataMap" type="MasterData" >
+        <id column="id" property="id"  />
+        <result column="type" property="type" />
+        <result column="data_key" property="dataKey" />
+        <result column="data_value" property="dataValue" />
+        <result column="parent_id" property="parentId" />
+        <result column="is_disabled" property="isDisabled" />
+    </resultMap>
+
+    <!-- ************** READ ************** -->
+    <select id="getMasterData" resultMap="masterDataMap" parameterType="String">
+        SELECT * FROM master <where><if test="value != null">type=#{value}</if></where>
+    </select>
+
+    <select id="getMasterDataById" resultMap="masterDataMap" parameterType="Long">
+        SELECT * FROM master WHERE id=#{value};
+    </select>
+
+    <select id="getMasterDataByKey" resultMap="masterDataMap">
+        SELECT * FROM master <where><if test="type != null">type=#{type}</if><if test="key != null"> AND data_key=#{key}</if></where>
+    </select>
+</mapper>

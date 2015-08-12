@@ -1,0 +1,108 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.ProviderDao">
+
+    <resultMap id="providerMap" type="Provider" >
+        <id      property="id"                column="provider_id"  />
+        <result property="createOn"       column="create_on" />
+        <result property="createBy"       column="create_by" />
+        <result property="modifyOn"       column="modify_on" />
+        <result property="modifyBy"       column="modify_by" />
+        <result property="approveOn"       column="approve_on" />
+        <result property="approveBy"       column="approve_by" />
+        <result property="applyOn"       column="apply_on" />
+        <result property="isApproved"        column="is_approved" />
+        <result property="status"         column="status" />
+
+        <result property="certificateNo"     column="certificate_no" />
+        <result property="practiceNo"      column="practice_no" />
+        <result property="practiceLocation"            column="practice_location" />
+        <result property="primaryPracticeName"            column="primary_practice_name" />
+        <result property="professionalRank"          column="professional_rank" />
+        <result property="specialties"         column="specialties" />
+        <result property="skills"         column="skills" />
+
+        <association property="userProfile" column="provider_id" select="getUserProfileById"/>
+    </resultMap>
+
+    <select id="getUserProfileById" parameterType="Long" resultMap="com.connehealth.dao.UserProfileDao.userProfileMap">
+        SELECT * FROM user_profiles WHERE user_id=#{value}
+    </select>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createProvider" parameterType="Provider" useGeneratedKeys="true">
+        INSERT
+        INTO providers
+        SET
+            provider_id=#{id},
+            create_on=#{createOn},
+            create_by=#{createBy},
+            modify_on=#{modifyOn},
+            modify_by=#{modifyBy},
+            approve_on=#{approveOn},
+            approve_by=#{approveBy},
+            apply_on=#{applyOn},
+            is_approved=#{isApproved},
+            status=#{status},
+
+            certificate_no=#{certificateNo},
+            practice_no=#{practiceNo},
+            practice_location=#{practiceLocation},
+            primary_practice_name=#{primaryPracticeName},
+            professional_rank=#{professionalRank},
+            specialties=#{specialties},
+            skills=#{skills}
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getProviders" resultMap="providerMap">
+        SELECT * FROM providers
+    </select>
+
+    <select id="getProviderById" resultMap="providerMap" parameterType="Long">
+        SELECT * FROM providers WHERE provider_id=#{value};
+    </select>
+
+    <!--<select id="getProviderByName" resultMap="providerMap" parameterType="String">
+        SELECT * FROM providers WHERE name=#{value};
+    </select>-->
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updateProvider" parameterType="Provider">
+        UPDATE
+            providers
+        SET
+            provider_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="approveOn !=null">,approve_on=#{approveOn}</if>
+            <if test="approveBy !=null">,approve_by=#{approveBy}</if>
+            <if test="applyOn !=null">,apply_on=#{applyOn}</if>
+            ,is_approved=#{isApproved}
+            <if test="status !=0">,status=#{status}</if>
+
+            <if test="certificateNo !=null">,certificate_no=#{certificateNo}</if>
+            <if test="practiceNo !=null">,practice_no=#{practiceNo}</if>
+            <if test="practiceLocation !=null">,practice_location=#{practiceLocation}</if>
+            <if test="primaryPracticeName !=null">,primary_practice_name=#{primaryPracticeName}</if>
+            <if test="professionalRank !=null">,professional_rank=#{professionalRank}</if>
+            <if test="specialties !=null">,specialties=#{specialties}</if>
+            <if test="skills !=null">,skills=#{skills}</if>
+        WHERE
+            provider_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deleteProviderById" parameterType="Long">
+        DELETE FROM providers WHERE provider_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deleteProviders">
+        TRUNCATE TABLE providers
+    </delete>
+
+</mapper>

@@ -1,0 +1,75 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.PatientFileDao">
+
+    <resultMap id="patientFileMap" type="PatientFile" >
+        <id      property="id"                column="patient_file_id"  />
+        <result property="createOn"       column="create_on" />
+        <result property="createBy"       column="create_by" />
+        <result property="modifyOn"       column="modify_on" />
+        <result property="modifyBy"       column="modify_by" />
+        <result property="status"         column="status" />
+        <result property="fileName"     column="file_name" />
+        <result property="options"      column="options" />
+        <result property="fileData"            column="file_data"  jdbcType="BLOB"/>
+    </resultMap>
+
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createPatientFile" parameterType="PatientFile" useGeneratedKeys="true">
+        INSERT INTO patient_files
+        SET
+            patient_file_id=#{id},
+            create_on=#{createOn},
+            create_by=#{createBy},
+            modify_on=#{modifyOn},
+            modify_by=#{modifyBy},
+            status=#{status},
+            file_name=#{fileName},
+            options=#{options},
+            file_data=#{fileData,jdbcType=BLOB}
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getPatientFiles" resultMap="patientFileMap">
+        SELECT * FROM patient_files
+    </select>
+
+    <select id="getPatientFileById" resultMap="patientFileMap" parameterType="Long">
+        SELECT * FROM patient_files WHERE patient_file_id=#{value};
+    </select>
+
+    <select id="getPatientFileByName" resultMap="patientFileMap" parameterType="String">
+        SELECT * FROM patient_files WHERE name=#{value};
+    </select>
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updatePatientFile" parameterType="PatientFile">
+        UPDATE
+        patient_files
+        SET
+            patient_file_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="status !=0">,status=#{status}</if>
+            <if test="fileName !=null">,file_name=#{fileName}</if>
+            <if test="options !=null">,options=#{options}</if>
+            <if test="fileData !=null">,file_data=#{fileData,jdbcType=BLOB}</if>
+        WHERE
+            patient_file_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deletePatientFileById" parameterType="Long">
+        DELETE FROM patient_files WHERE patient_file_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deletePatientFiles">
+        TRUNCATE TABLE patient_files
+    </delete>
+
+</mapper>

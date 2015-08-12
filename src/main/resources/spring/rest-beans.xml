@@ -20,8 +20,38 @@
         <property name="podcastDao" ref="podcastDao"/>
     </bean>
 
+    <bean id="masterDataRestService" class="com.connehealth.service.MasterDataRestService"  depends-on="masterDataDao">
+        <property name="masterDataDao" ref="masterDataDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
     <bean id="userProfileRestService" class="com.connehealth.service.UserProfileRestService"  depends-on="userProfileDao">
         <property name="userProfileDao" ref="userProfileDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean id="practiceRestService" class="com.connehealth.service.PracticeRestService"  depends-on="practiceDao">
+        <property name="practiceDao" ref="practiceDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="practiceFileRestService" class="com.connehealth.service.PracticeFileRestService"  depends-on="practiceFileDao">
+        <property name="practiceFileDao" ref="practiceFileDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="providerRestService" class="com.connehealth.service.ProviderRestService"  depends-on="providerDao">
+        <property name="providerDao" ref="providerDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="employeeRestService" class="com.connehealth.service.EmployeeRestService"  depends-on="employeeDao">
+        <property name="employeeDao" ref="employeeDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="patientRestService" class="com.connehealth.service.PatientRestService"  depends-on="patientDao">
+        <property name="patientDao" ref="patientDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="patientFileRestService" class="com.connehealth.service.PatientFileRestService"  depends-on="patientFileDao">
+        <property name="patientFileDao" ref="patientFileDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>
 

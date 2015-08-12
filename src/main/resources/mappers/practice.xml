@@ -1,0 +1,157 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.PracticeDao">
+
+    <resultMap id="practiceMap" type="Practice" >
+        <id      property="id"                column="practice_id"  />
+        <result property="createOn"       column="create_on" />
+        <result property="createBy"       column="create_by" />
+        <result property="modifyOn"       column="modify_on" />
+        <result property="modifyBy"       column="modify_by" />
+        <result property="approveOn"       column="approve_on" />
+        <result property="approveBy"       column="approve_by" />
+        <result property="applyOn"       column="apply_on" />
+        <result property="isApproved"        column="is_approved" />
+        <result property="status"         column="status" />
+        <result property="type"     column="type" />
+        <result property="name"      column="name" />
+        <result property="practiceLicenseCode"            column="practice_license_code" />
+        <result property="issuer"            column="issuer" />
+        <result property="effectiveDate"          column="effective_date" />
+        <result property="expiryDate"         column="expiry_date" />
+        <result property="legalPerson"         column="legal_person" />
+        <result property="principal"         column="principal" />
+        <result property="email"     column="email" />
+        <result property="provinceId"            column="province_id" />
+        <result property="cityId"        column="city_id" />
+        <result property="districtId"        column="district_id" />
+        <result property="zip"        column="zip" />
+        <result property="address"        column="address" />
+        <result property="practiceLicenseFileId"        column="practice_license_file_id" />
+        <result property="businessPhone"        column="business_phone" />
+        <result property="numberOfDoctors"        column="number_of_doctors" />
+        <result property="numberOfBeds"        column="number_of_beds" />
+        <result property="isPublicOrg"        column="is_public_org" />
+        <result property="businessLicenseCode"        column="business_license_code" />
+        <result property="registeredFund"        column="registered_fund" />
+        <result property="businessLicenseFileId"        column="business_license_file_id" />
+        <result property="organizationCodeFileId"        column="organization_code_file_id" />
+        <result property="taxEnrolFileId"        column="tax_enrol_file_id" />
+        <result property="isChainPractice"        column="is_chain_practice" />
+        <result property="chainPracticeName"        column="chain_practice_name" />
+    </resultMap>
+
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createPractice" parameterType="Practice" useGeneratedKeys="true">
+        INSERT
+        INTO practices
+        SET
+            practice_id=#{id},
+            create_on=#{createOn},
+            create_by=#{createBy},
+            modify_on=#{modifyOn},
+            modify_by=#{modifyBy},
+            approve_on=#{approveOn},
+            approve_by=#{approveBy},
+            apply_on=#{applyOn},
+            is_approved=#{isApproved},
+            status=#{status},
+            type=#{type},
+            name=#{name},
+            practice_license_code=#{practiceLicenseCode},
+            issuer=#{issuer},
+            effective_date=#{effectiveDate},
+            expiry_date=#{expiryDate},
+            legal_person=#{legalPerson},
+            principal=#{principal},
+            email=#{email},
+            province_id=#{provinceId},
+            city_id=#{cityId},
+            district_id=#{districtId},
+            zip=#{zip},
+            address=#{address},
+            practice_license_file_id=#{practiceLicenseFileId},
+            business_phone=#{businessPhone},
+            number_of_doctors=#{numberOfDoctors},
+            number_of_beds=#{numberOfBeds},
+            is_public_org=#{isPublicOrg},
+            business_license_code=#{businessLicenseCode},
+            registered_fund=#{registeredFund},
+            business_license_file_id=#{businessLicenseFileId},
+            organization_code_file_id=#{organizationCodeFileId},
+            tax_enrol_file_id=#{taxEnrolFileId},
+            is_chain_practice=#{isChainPractice},
+            chain_practice_name=#{chainPracticeName}
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getPractices" resultMap="practiceMap">
+        SELECT * FROM practices
+    </select>
+
+    <select id="getPracticeById" resultMap="practiceMap" parameterType="Long">
+        SELECT * FROM practices WHERE practice_id=#{value};
+    </select>
+
+    <select id="getPracticeByName" resultMap="practiceMap" parameterType="String">
+        SELECT * FROM practices WHERE name=#{value};
+    </select>
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updatePractice" parameterType="Practice">
+        UPDATE
+        practices
+        SET
+            practice_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="approveOn !=null">,approve_on=#{approveOn}</if>
+            <if test="approveBy !=null">,approve_by=#{approveBy}</if>
+            <if test="applyOn !=null">,apply_on=#{applyOn}</if>
+            ,is_approved=#{isApproved}
+            <if test="status !=0">,status=#{status}</if>
+            <if test="type !=null">,type=#{type}</if>
+            <if test="name !=null">,name=#{name}</if>
+            <if test="practiceLicenseCode !=null">,practice_license_code=#{practiceLicenseCode}</if>
+            <if test="issuer !=null">,issuer=#{issuer}</if>
+            <if test="effectiveDate !=null">,effective_date=#{effectiveDate}</if>
+            <if test="expiryDate !=null">,expiry_date=#{expiryDate}</if>
+            <if test="legalPerson !=null">,legal_person=#{legalPerson}</if>
+            <if test="principal !=null">,principal=#{principal}</if>
+            <if test="email !=null">,email=#{email}</if>
+            <if test="provinceId !=0">,province_id=#{provinceId}</if>
+            <if test="cityId !=0">,city_id=#{cityId}</if>
+            <if test="districtId !=0">,district_id=#{districtId}</if>
+            <if test="zip !=null">,zip=#{zip}</if>
+            <if test="address !=null">,address=#{address}</if>
+            <if test="practiceLicenseFileId !=null">,practice_license_file_id=#{practiceLicenseFileId}</if>
+            <if test="businessPhone !=null">,business_phone=#{businessPhone}</if>
+            <if test="numberOfDoctors !=null">,number_of_doctors=#{numberOfDoctors}</if>
+            <if test="numberOfBeds !=null">,number_of_beds=#{numberOfBeds}</if>
+            ,is_public_org=#{isPublicOrg}
+            <if test="businessLicenseCode !=null">,business_license_code=#{businessLicenseCode}</if>
+            <if test="registeredFund !=null">,registered_fund=#{registeredFund}</if>
+            <if test="businessLicenseFileId !=null">,business_license_file_id=#{businessLicenseFileId}</if>
+            <if test="organizationCodeFileId !=null">,organization_code_file_id=#{organizationCodeFileId}</if>
+            <if test="taxEnrolFileId !=null">,tax_enrol_file_id=#{taxEnrolFileId}</if>
+            ,is_chain_practice=#{isChainPractice}
+            <if test="chainPracticeName !=null">,chain_practice_name=#{chainPracticeName}</if>
+        WHERE
+            practice_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deletePracticeById" parameterType="Long">
+        DELETE FROM practices WHERE practice_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deletePractices">
+        TRUNCATE TABLE practices
+    </delete>
+
+</mapper>

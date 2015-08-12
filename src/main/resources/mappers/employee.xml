@@ -1,0 +1,88 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.EmployeeDao">
+
+    <resultMap id="employeeMap" type="Employee" >
+        <id      property="id"                column="employee_id"  />
+        <result property="createOn"       column="create_on" />
+        <result property="createBy"       column="create_by" />
+        <result property="modifyOn"       column="modify_on" />
+        <result property="modifyBy"       column="modify_by" />
+        <result property="status"         column="status" />
+
+        <result property="practiceId"     column="practice_id" />
+        <result property="userId"      column="user_id" />
+        <result property="isManager"            column="is_manager" />
+
+        <association property="practice" column="practice_id" select="getPracticeById"/>
+        <association property="provider" column="user_id" select="getProviderById"/>
+    </resultMap>
+
+    <select id="getPracticeById" parameterType="Long" resultMap="com.connehealth.dao.PracticeDao.practiceMap">
+        SELECT * FROM practices WHERE practice_id=#{value}
+    </select>
+    <select id="getProviderById" parameterType="Long" resultMap="com.connehealth.dao.ProviderDao.providerMap">
+        SELECT * FROM providers WHERE provider_id=#{value}
+    </select>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createEmployee" parameterType="Employee" useGeneratedKeys="true">
+        INSERT
+        INTO employees
+        SET
+            employee_id=#{id},
+            create_on=#{createOn},
+            create_by=#{createBy},
+            modify_on=#{modifyOn},
+            modify_by=#{modifyBy},
+            status=#{status},
+
+            practice_id=#{practiceId},
+            user_id=#{userId},
+            is_manager=#{isManager},
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getEmployees" resultMap="employeeMap">
+        SELECT * FROM employees
+    </select>
+
+    <select id="getEmployeeById" resultMap="employeeMap" parameterType="Long">
+        SELECT * FROM employees WHERE employee_id=#{value};
+    </select>
+
+    <!--<select id="getProviderByName" resultMap="providerMap" parameterType="String">
+        SELECT * FROM providers WHERE name=#{value};
+    </select>-->
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updateEmployee" parameterType="Employee">
+        UPDATE
+            employees
+        SET
+            employee_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="status !=0">,status=#{status}</if>
+
+            <if test="practiceId !=null">,practice_id=#{practiceId}</if>
+            <if test="userId !=null">,user_id=#{userId}</if>
+            ,is_manager=#{isManager}
+        WHERE
+            employee_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deleteEmployeeById" parameterType="Long">
+        DELETE FROM employees WHERE employee_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deleteEmployees">
+        TRUNCATE TABLE employees
+    </delete>
+
+</mapper>

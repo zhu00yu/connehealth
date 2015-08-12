@@ -7,16 +7,16 @@ import com.connehealth.entities.Podcast;
 import com.connehealth.entities.User;
 import com.connehealth.entities.UserProfile;
 import com.connehealth.security.TokenUtils;
+import org.glassfish.hk2.api.PerLookup;
+import org.glassfish.jersey.process.internal.RequestScoped;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Singleton;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.List;
 
 /**
@@ -30,22 +30,15 @@ import java.util.List;
 public class UserProfileRestService extends BaseRestService {
 
     @Autowired
-    private UserProfileDao userProfileDao;
+    protected UserProfileDao userProfileDao;
     public void setUserProfileDao(UserProfileDao userProfileDao) {
         this.userProfileDao = userProfileDao;
     }
-    @Autowired
-    private UserDao userDao;
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
 
-    private User getCurrentUser(){
-        String name = getCurrentUserName();
-        User user = userDao.getUserByUserName(name);
+    @Context
+    Request request;
 
-        return user;
-    }
+
 
     /************************************ CREATE ************************************/
     @POST
@@ -74,8 +67,7 @@ public class UserProfileRestService extends BaseRestService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<UserProfile> getUserProfiles(@Context HttpHeaders headers) {
         try {
-            String name = TokenUtils.getUserNameFromToken(headers);
-            User user = userDao.getUserByUserName(name);
+            User user = getCurrentUser(headers);
             if (user ==  null){
                 return null;
             }

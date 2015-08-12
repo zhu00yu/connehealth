@@ -43,13 +43,13 @@
     </bean>
 
     <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="classpath:test_data/authorization_schema.sql" />
-        <jdbc:script location="classpath:test_data/authorization_data.sql" />
-        <jdbc:script location="classpath:test_data/master_schema.sql" />
-        <jdbc:script location="classpath:test_data/master_data.sql" />
-        <jdbc:script location="classpath:test_data/account_schema.sql" />
-        <jdbc:script location="classpath:test_data/account_data.sql" />
-        <jdbc:script location="classpath:test_data/business_schema.sql" />
-        <jdbc:script location="classpath:test_data/business_data.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/authorization_schema.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/authorization_data.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/master_schema.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/master_data.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/account_schema.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/account_data.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/business_schema.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/business_data.sql" />
     </jdbc:initialize-database>
 </beans>
