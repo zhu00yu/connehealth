@@ -43,6 +43,8 @@
         <property name="userDao" ref="userDao"/>
     </bean>
     <bean id="employeeRestService" class="com.connehealth.service.EmployeeRestService"  depends-on="employeeDao">
+        <property name="userProfileDao" ref="userProfileDao"/>
+        <property name="providerDao" ref="providerDao"/>
         <property name="employeeDao" ref="employeeDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>

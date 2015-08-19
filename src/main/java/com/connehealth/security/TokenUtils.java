@@ -16,13 +16,15 @@ public class TokenUtils
     public static final String MAGIC_KEY = "obfuscate";
 
 
-    public static String createToken(UserDetails userDetails)
+    public static String createToken(UserDetails userDetails, Long practiceId)
     {
 		/* Expires in one hour */
         long expires = System.currentTimeMillis() + 1000L * 60 * 60;
 
         StringBuilder tokenBuilder = new StringBuilder();
         tokenBuilder.append(userDetails.getUsername());
+        tokenBuilder.append(":");
+        tokenBuilder.append(practiceId);
         tokenBuilder.append(":");
         tokenBuilder.append(expires);
         tokenBuilder.append(":");
@@ -54,6 +56,22 @@ public class TokenUtils
     }
 
 
+    public static String getExpiresFromToken(String authToken)
+    {
+        if (null == authToken) {
+            return null;
+        }
+
+        String[] parts = authToken.split(":");
+        return parts.length < 3 ? null : parts[2];
+    }
+
+    public static boolean isExpireToken(String authToken){
+        long expires = Long.parseLong(getExpiresFromToken(authToken));
+
+        return expires < System.currentTimeMillis();
+    }
+
     public static String getUserNameFromToken(String authToken)
     {
         if (null == authToken) {
@@ -61,7 +79,7 @@ public class TokenUtils
         }
 
         String[] parts = authToken.split(":");
-        return parts[0];
+        return parts.length < 1 ? null : parts[0];
     }
 
 
@@ -79,11 +97,42 @@ public class TokenUtils
     }
 
 
+    public static String getPracticeIdFromToken(String authToken)
+    {
+        if (null == authToken) {
+            return null;
+        }
+
+        String[] parts = authToken.split(":");
+        return parts.length < 2 ? null : parts[1];
+    }
+
+
+    public static String getPracticeIdFromToken(HttpServletRequest httpRequest)
+    {
+        String authToken = getAuthToken(httpRequest);
+        return getPracticeIdFromToken(authToken);
+    }
+
+
+    public static String getPracticeIdFromToken(HttpHeaders headers)
+    {
+        String authToken = getAuthToken(headers);
+        return getPracticeIdFromToken(authToken);
+    }
+
+
     public static boolean validateToken(String authToken, UserDetails userDetails)
     {
         String[] parts = authToken.split(":");
-        long expires = Long.parseLong(parts[1]);
-        String signature = parts[2];
+        if (parts.length < 4){
+            return false;
+        }
+
+        String username = parts[0];
+        long practiceId = Long.parseLong(parts[1]);
+        long expires = Long.parseLong(parts[2]);
+        String signature = parts[3];
 
         if (expires < System.currentTimeMillis()) {
             return false;

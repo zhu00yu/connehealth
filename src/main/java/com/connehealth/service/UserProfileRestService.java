@@ -43,12 +43,11 @@ public class UserProfileRestService extends BaseRestService {
     /************************************ CREATE ************************************/
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.TEXT_HTML})
     @Transactional
     public Response createUserProfile(UserProfile model) {
         userProfileDao.createUserProfile(model);
 
-        return Response.status(201).entity("A new user-profile/resource has been created").build();
+        return Response.status(200).entity(model.getId()).build();
     }
 
     @POST @Path("list")

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,13 +35,12 @@ public class PatientRestService extends BaseRestService {
     /************************************ CREATE ************************************/
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.TEXT_HTML})
     @Transactional
     public Response createPatient(@Context HttpHeaders headers, Patient model) {
         model = setAuditInfoForCreator(model, headers);
         patientDao.createPatient(model);
 
-        return Response.status(201).entity("A new Patients/resource has been created").build();
+        return Response.status(200).entity(model.getId()).build();
     }
 
     @POST @Path("list")
@@ -60,6 +60,12 @@ public class PatientRestService extends BaseRestService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Patient> getPatients(@Context HttpHeaders headers) {
         return patientDao.getPatients();
+    }
+
+    @GET @Path("list/{providerId}/{scheduleDate}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public List<Patient> getPatients(@Context HttpHeaders headers, @PathParam("providerId") Long providerId) {
+        return patientDao.getPatientsByProvider(providerId);
     }
 
     @GET @Path("{id}")

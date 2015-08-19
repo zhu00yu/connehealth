@@ -22,6 +22,9 @@ public class Provider extends AuditableEntity {
     public UserProfile getUserProfile() {
         return userProfile;
     }
+    public void setUserProfile(UserProfile profile) {
+        this.userProfile = profile;
+    }
 
     public Date getApplyOn() {
         return applyOn;

@@ -9,6 +9,13 @@
         <collection property="authorities" column="username" javaType="ArrayList" ofType="String" select="getAuthorityByUserName"/>
     </resultMap>
 
+    <resultMap id="persistentLoginMap" type="PersistentLogin" >
+        <id column="series" property="series"  />
+        <result column="username" property="userName" />
+        <result column="token" property="token" />
+        <result column="last_used" property="lastUsed" />
+    </resultMap>
+
 
     <!-- ************** READ ************** -->
     <select id="getUsers" resultMap="userMap">
@@ -26,5 +33,14 @@
     <select id="getAuthorityByUserName" parameterType="String" resultType="String">
         SELECT authority FROM authorities WHERE username=#{username}
     </select>
+
+    <select id="getLatestLoginedUser" resultMap="persistentLoginMap" parameterType="String">
+        SELECT TOP 1 * FROM persistent_logins WHERE username=#{value} ORDER BY last_used DESC;
+    </select>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createLatestLoginedUser" parameterType="PersistentLogin">
+        INSERT INTO persistent_logins (series,username,token,last_used) VALUES (#{series}, #{userName}, #{token}, #{lastUsed})
+    </insert>
 
 </mapper>

@@ -45,51 +45,19 @@
     </resultMap>
 
     <!-- ************** CREATE ************** -->
-    <insert id="createPatient" parameterType="Patient" useGeneratedKeys="true">
-        INSERT
-        INTO patients
-        SET
-            patient_id=#{id}
-            create_on=#{createOn}
-            create_by=#{createBy}
-            modify_on=#{modifyOn}
-            modify_by=#{modifyBy}
-            status=#{status}
-            mrn=#{mrn}
-            ssn=#{ssn}
-            id_no=#{idNo}
-            photo_id=#{photoId}
-            family_name=#{familyName}
-            given_name=#{givenName}
-            patient_name=#{patientName}
-            sex=#{sex}
-            dob=#{dob}
-            blood_type=#{bloodType}
-            nationality=#{nationality}
-            race=#{race}
-            ethnicity=#{ethnicity}
-            preferred_language=#{preferredLanguage}
-            native_place=#{nativePlace}
-            email=#{email}
-            mobile=#{mobile}
-            home_address=#{homeAddress}
-            home_zip=#{homeZip}
-            registered_address=#{registeredAddress}
-            registered_zip=#{registeredZip}
-            work_address=#{workAddress}
-            work_phone=#{workPhone}
-            work_zip=#{workZip}
-            contact_person=#{contactPerson}
-            contact_relationship=#{contactRelationship}
-            contact_phone=#{contactPhone}
-            industry=#{industry}
-            company=#{company}
-            marital_status=#{maritalStatus}
-
+    <insert id="createPatient" parameterType="Patient" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO patients
+        (create_on,create_by,modify_on,modify_by,status,mrn,ssn,id_no,photo_id,family_name,given_name,patient_name,sex,dob,blood_type,nationality,race,ethnicity,preferred_language,native_place,email,mobile,home_address,home_zip,registered_address,registered_zip,work_address,work_phone,work_zip,contact_person,contact_relationship,contact_phone,industry,company,marital_status)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},#{mrn},#{ssn},#{idNo},#{photoId},#{familyName},#{givenName},#{patientName},#{sex},#{dob},#{bloodType},#{nationality},#{race},#{ethnicity},#{preferredLanguage},#{nativePlace},#{email},#{mobile},#{homeAddress},#{homeZip},#{registeredAddress},#{registeredZip},#{workAddress},#{workPhone},#{workZip},#{contactPerson},#{contactRelationship},#{contactPhone},#{industry},#{company},#{maritalStatus})
     </insert>
 
     <!-- ************** READ ************** -->
     <select id="getPatients" resultMap="patientMap">
+        SELECT * FROM patients
+    </select>
+
+    <select id="getPatientsByProvider" resultMap="patientMap" parameterType="Long">
         SELECT * FROM patients
     </select>
 

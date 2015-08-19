@@ -1,17 +1,15 @@
 package com.connehealth.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
+import com.connehealth.entities.PersistentLogin;
+import com.connehealth.entities.User;
 import com.connehealth.security.TokenUtils;
+import com.connehealth.transfer.PersistentLoginTransfer;
 import com.connehealth.transfer.TokenTransfer;
 import com.connehealth.transfer.UserTransfer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Path("/user")
-public class UserRestService {
+public class UserRestService extends BaseRestService {
     @Autowired
     private UserDetailsService userService;
 
@@ -56,20 +54,21 @@ public class UserRestService {
     }
 
 
-    /**
-     * Authenticates a user and creates an authentication token.
-     *
-     * @param username
-     *            The name of the user.
-     * @param password
-     *            The password of the user.
-     * @return A transfer containing the authentication token.
-     */
     @Path("authenticate")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public TokenTransfer authenticate(@FormParam("username") String username, @FormParam("password") String password)
+    public TokenTransfer authenticate(Map<String, String> map)
     {
+        String username = map.get("username");
+        String password = map.get("password");
+        Long practiceId = null;
+        try{
+            practiceId = Long.parseLong(map.get("practiceId"));
+        }catch (Exception ex){
+            practiceId = null;
+        }
+
+
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = this.authManager.authenticate(authenticationToken);
@@ -80,8 +79,54 @@ public class UserRestService {
 		 * password is needed for token generation
 		 */
         UserDetails userDetails = this.userService.loadUserByUsername(username);
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        List<String> datas = new ArrayList<String>();
+        for(GrantedAuthority auth : authorities){
+            datas.add(auth.getAuthority());
+        }
+        String token = TokenUtils.createToken(userDetails, practiceId);
 
-        return new TokenTransfer(TokenUtils.createToken(userDetails));
+        try {
+            PersistentLogin userLogin = new PersistentLogin();
+            userLogin.setSeries(String.valueOf(new Date().getTime()));
+            userLogin.setLastUsed(new Date());
+            userLogin.setUserName(userDetails.getUsername());
+            userLogin.setToken(token);
+
+            userDao.createLatestLoginedUser(userLogin);
+        }catch(Exception ex){
+            String msg = ex.getMessage();
+        }
+
+        return new TokenTransfer(token, datas);
+    }
+
+    @Path("authenticate/{token}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response authenticate(@PathParam("token") String token) throws Exception {
+        TokenTransfer result = null;
+
+        try {
+            String userName = TokenUtils.getUserNameFromToken(token);
+            if (userName == null) {
+                throw new Exception("Token is Wrong!");
+            }
+            if (TokenUtils.isExpireToken(token)) {
+                throw new Exception("Token is Expired!");
+            }
+            User user = userDao.getUserByUserName(userName);
+            if (user == null) {
+                throw new Exception(userName + " isn't found!");
+            }
+            PersistentLogin userLogin = userDao.getLatestLoginedUser(userName);
+            if (!token.equals(userLogin.getToken())) {
+                throw new Exception("Token is invalid.");
+            }
+            return Response.status(200).entity(new TokenTransfer(token, user.getAuthorities())).build();
+        }catch (Exception ex){
+            return Response.status(500).entity(ex.getMessage()).build();
+        }
     }
 
 
@@ -95,4 +140,16 @@ public class UserRestService {
         return roles;
     }
 
+    @GET
+    @Path("login-info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public PersistentLoginTransfer getUserLoginInfo(@Context HttpHeaders headers)
+    {
+        User user = getCurrentUser(headers);
+        String userName = user.getUserName();
+        PersistentLogin login = userDao.getLatestLoginedUser(userName);
+        String token = login.getToken();
+        Long practiceId = Long.parseLong(TokenUtils.getPracticeIdFromToken(token));
+        return new PersistentLoginTransfer(userName, practiceId, token, user.getAuthorities());
+    }
 }

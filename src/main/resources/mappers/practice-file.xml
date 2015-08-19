@@ -17,19 +17,11 @@
 
 
     <!-- ************** CREATE ************** -->
-    <insert id="createPracticeFile" parameterType="PracticeFile" useGeneratedKeys="true">
-        INSERT
-        INTO practice_files
-        SET
-            practice_file_id=#{id},
-            create_on=#{createOn},
-            create_by=#{createBy},
-            modify_on=#{modifyOn},
-            modify_by=#{modifyBy},
-            status=#{status},
-            file_name=#{fileName},
-            options=#{options},
-            file_data=#{fileData,jdbcType=BLOB}
+    <insert id="createPracticeFile" parameterType="PracticeFile" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO practice_files
+        (create_on,create_by,modify_on,modify_by,status,file_name,options,file_data)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},#{fileName},#{options},#{fileData,jdbcType=BLOB})
     </insert>
 
     <!-- ************** READ ************** -->

@@ -33,14 +33,13 @@ public class PatientFileRestService extends BaseRestService {
     /************************************ CREATE ************************************/
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.TEXT_HTML})
     @Transactional
     public Response createPatientFile(@Context HttpHeaders headers, PatientFileTransfer model) {
         PatientFile file = model.toPatientFile();
         file = setAuditInfoForCreator(file, headers);
         patientFileDao.createPatientFile(file);
 
-        return Response.status(201).entity("A new Patient-files/resource has been created").build();
+        return Response.status(200).entity(file.getId()).build();
     }
 
     @POST @Path("list")

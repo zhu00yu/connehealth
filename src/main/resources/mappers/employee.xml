@@ -27,29 +27,31 @@
     </select>
 
     <!-- ************** CREATE ************** -->
-    <insert id="createEmployee" parameterType="Employee" useGeneratedKeys="true">
-        INSERT
-        INTO employees
-        SET
-            employee_id=#{id},
-            create_on=#{createOn},
-            create_by=#{createBy},
-            modify_on=#{modifyOn},
-            modify_by=#{modifyBy},
-            status=#{status},
-
-            practice_id=#{practiceId},
-            user_id=#{userId},
-            is_manager=#{isManager},
+    <insert id="createEmployee" parameterType="Employee" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employees
+        (create_on,create_by,modify_on,modify_by,status,practice_id,user_id,is_manager)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},#{practiceId},#{userId},#{isManager})
     </insert>
 
     <!-- ************** READ ************** -->
     <select id="getEmployees" resultMap="employeeMap">
         SELECT * FROM employees
     </select>
+    <select id="getPracticeEmployees" resultMap="employeeMap" parameterType="Long">
+        SELECT * FROM employees WHERE practice_id=#{value};
+    </select>
 
     <select id="getEmployeeById" resultMap="employeeMap" parameterType="Long">
         SELECT * FROM employees WHERE employee_id=#{value};
+    </select>
+
+    <select id="getEmployeeByUser" resultMap="employeeMap">
+        SELECT TOP 1 * FROM employees WHERE practice_id=#{practiceId} AND user_id=#{userId};
+    </select>
+
+    <select id="getFreeUsers" resultMap="com.connehealth.dao.UserProfileDao.userProfileMap" parameterType="Long">
+        SELECT * FROM user_profiles WHERE user_id NOT IN (SELECT e.user_id FROM employees e WHERE practice_id=#{value});
     </select>
 
     <!--<select id="getProviderByName" resultMap="providerMap" parameterType="String">

@@ -8,6 +8,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import com.connehealth.dao.UserDao;
+import com.connehealth.entities.PersistentLogin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +23,11 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean
 {
 
     private final UserDetailsService userService;
-
+    @Autowired
+    private UserDao userDao;
+    public void setUserDao(UserDao userDao){
+        this.userDao = userDao;
+    }
 
     public AuthenticationTokenProcessingFilter(UserDetailsService userService)
     {
@@ -35,13 +42,21 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean
         HttpServletRequest httpRequest = this.getAsHttpRequest(request);
 
         String authToken = this.extractAuthTokenFromRequest(httpRequest);
-        String userName = TokenUtils.getUserNameFromToken(authToken);
+        String userName = authToken == null ? null : TokenUtils.getUserNameFromToken(authToken);
+        Long practiceId = null;
+        try{
+            practiceId = authToken == null ? null : Long.parseLong(TokenUtils.getPracticeIdFromToken(authToken));
+        }catch (Exception ex){
+            practiceId = null;
+        }
 
-        if (userName != null) {
+        if (userName != null && practiceId != null) {
 
             UserDetails userDetails = this.userService.loadUserByUsername(userName);
-
-            if (TokenUtils.validateToken(authToken, userDetails)) {
+            PersistentLogin loginInfo = userDao.getLatestLoginedUser(userName);
+            if (loginInfo != null && userDetails != null
+                    && authToken.equals(loginInfo.getToken())
+                    && TokenUtils.validateToken(authToken, userDetails)) {
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

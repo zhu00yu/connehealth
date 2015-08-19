@@ -22,24 +22,11 @@
 
 
     <!-- ************** CREATE ************** -->
-    <insert id="createUserProfile" parameterType="UserProfile" useGeneratedKeys="true">
-        INSERT
-        INTO podcasts
-        SET
-        user_id = #{id},
-        create_on = #{createOn},
-        status = #{status},
-        family_name = #{familyName}
-        given_name = #{givenName}
-        dob = #{dob}
-        sex = #{sex}
-        email = #{email}
-        mobile = #{mobile}
-        province_id = #{provinceId}
-        city_id = #{cityId}
-        district_id = #{districtId}
-        zip = #{zip}
-        address = #{address}
+    <insert id="createUserProfile" parameterType="UserProfile">
+        INSERT INTO podcasts
+        (user_id,create_on,status,family_name,given_name,dob,sex,email,mobile,province_id,city_id,district_id,zip,address)
+        VALUES
+        (#{id},#{createOn},#{status},#{familyName},#{givenName},#{dob},#{sex},#{email},#{mobile},#{provinceId},#{cityId},#{districtId},#{zip},#{address})
     </insert>
 
     <!-- ************** READ ************** -->

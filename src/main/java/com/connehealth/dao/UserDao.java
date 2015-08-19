@@ -1,5 +1,6 @@
 package com.connehealth.dao;
 
+import com.connehealth.entities.PersistentLogin;
 import com.connehealth.entities.User;
 import com.connehealth.entities.UserProfile;
 
@@ -14,4 +15,7 @@ public interface UserDao {
     public User getUserById(Long id);
     public User getUserByUserName(String userName);
     public List<String> getAuthorityByUserName(String userName);
+
+    public PersistentLogin getLatestLoginedUser(String userName);
+    public Long createLatestLoginedUser(PersistentLogin userLogin);
 }

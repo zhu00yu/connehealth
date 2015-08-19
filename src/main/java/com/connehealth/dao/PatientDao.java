@@ -2,6 +2,7 @@ package com.connehealth.dao;
 
 import com.connehealth.entities.Patient;
 import com.connehealth.entities.UserProfile;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public interface PatientDao {
     public List<Patient> getPatients();
+    public List<Patient> getPatientsByProvider(@Param(value = "providerId")Long providerId);
 
     public Patient getPatientById(Long id);
 /*

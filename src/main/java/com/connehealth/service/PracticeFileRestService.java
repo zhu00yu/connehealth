@@ -39,14 +39,14 @@ public class PracticeFileRestService extends BaseRestService {
     /************************************ CREATE ************************************/
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.TEXT_HTML})
     @Transactional
     public Response createPracticeFile(@Context HttpHeaders headers, PracticeFileTransfer model) {
         PracticeFile file = model.toPracticeFile();
         file = setAuditInfoForCreator(file, headers);
-        practiceFileDao.createPracticeFile(file);
+        Long fileId = practiceFileDao.createPracticeFile(file);
+        fileId = file.getId();
 
-        return Response.status(201).entity("A new practice-files/resource has been created").build();
+        return Response.status(200).entity(fileId).build();
     }
 
     @POST @Path("list")

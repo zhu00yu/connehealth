@@ -34,13 +34,12 @@ public class ProviderRestService extends BaseRestService {
     /************************************ CREATE ************************************/
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.TEXT_HTML})
     @Transactional
     public Response createProvider(@Context HttpHeaders headers, Provider model) {
         model = setAuditInfoForCreator(model, headers);
         providerDao.createProvider(model);
 
-        return Response.status(201).entity("A new Providers/resource has been created").build();
+        return Response.status(200).entity(model.getId()).build();
     }
 
     @POST @Path("list")

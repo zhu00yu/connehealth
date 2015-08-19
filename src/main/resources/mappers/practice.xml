@@ -44,46 +44,12 @@
 
 
     <!-- ************** CREATE ************** -->
-    <insert id="createPractice" parameterType="Practice" useGeneratedKeys="true">
-        INSERT
-        INTO practices
-        SET
-            practice_id=#{id},
-            create_on=#{createOn},
-            create_by=#{createBy},
-            modify_on=#{modifyOn},
-            modify_by=#{modifyBy},
-            approve_on=#{approveOn},
-            approve_by=#{approveBy},
-            apply_on=#{applyOn},
-            is_approved=#{isApproved},
-            status=#{status},
-            type=#{type},
-            name=#{name},
-            practice_license_code=#{practiceLicenseCode},
-            issuer=#{issuer},
-            effective_date=#{effectiveDate},
-            expiry_date=#{expiryDate},
-            legal_person=#{legalPerson},
-            principal=#{principal},
-            email=#{email},
-            province_id=#{provinceId},
-            city_id=#{cityId},
-            district_id=#{districtId},
-            zip=#{zip},
-            address=#{address},
-            practice_license_file_id=#{practiceLicenseFileId},
-            business_phone=#{businessPhone},
-            number_of_doctors=#{numberOfDoctors},
-            number_of_beds=#{numberOfBeds},
-            is_public_org=#{isPublicOrg},
-            business_license_code=#{businessLicenseCode},
-            registered_fund=#{registeredFund},
-            business_license_file_id=#{businessLicenseFileId},
-            organization_code_file_id=#{organizationCodeFileId},
-            tax_enrol_file_id=#{taxEnrolFileId},
-            is_chain_practice=#{isChainPractice},
-            chain_practice_name=#{chainPracticeName}
+    <insert id="createPractice" parameterType="Practice" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO practices
+        (create_on,create_by,modify_on,modify_by,approve_on,approve_by,apply_on,is_approved,status,type,name,practice_license_code,issuer,effective_date,expiry_date,legal_person,principal,email,province_id,city_id,district_id,zip,address,practice_license_file_id,business_phone,number_of_doctors,number_of_beds,is_public_org,business_license_code,registered_fund,business_license_file_id,organization_code_file_id,tax_enrol_file_id,is_chain_practice,chain_practice_name)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{approveOn},#{approveBy},#{applyOn},#{isApproved},#{status},#{type},#{name},#{practiceLicenseCode},#{issuer},#{effectiveDate},#{expiryDate},#{legalPerson},#{principal},#{email},#{provinceId},#{cityId},#{districtId},#{zip},#{address},#{practiceLicenseFileId},#{businessPhone},#{numberOfDoctors},#{numberOfBeds},#{isPublicOrg},#{businessLicenseCode},#{registeredFund},#{businessLicenseFileId},#{organizationCodeFileId},#{taxEnrolFileId},#{isChainPractice},#{chainPracticeName})
+
     </insert>
 
     <!-- ************** READ ************** -->

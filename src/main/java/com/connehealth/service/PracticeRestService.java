@@ -5,12 +5,14 @@ import com.connehealth.dao.UserProfileDao;
 import com.connehealth.entities.Practice;
 import com.connehealth.entities.User;
 import com.connehealth.entities.UserProfile;
+import com.connehealth.security.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,13 +40,12 @@ public class PracticeRestService extends BaseRestService {
     /************************************ CREATE ************************************/
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.TEXT_HTML})
     @Transactional
     public Response createPractice(@Context HttpHeaders headers, Practice model) {
         model = setAuditInfoForCreator(model, headers);
         practiceDao.createPractice(model);
 
-        return Response.status(201).entity("A new practices/resource has been created").build();
+        return Response.status(200).entity(model.getId()).build();
     }
 
     @POST @Path("list")
@@ -66,6 +67,21 @@ public class PracticeRestService extends BaseRestService {
         return practiceDao.getPractices();
     }
 
+    @GET @Path("options")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response getOptions() {
+        List<String[]> options = new ArrayList<String[]>();
+        List<Practice> data = practiceDao.getPractices();
+        if(data != null) {
+            for(Practice p : data){
+                String opt[] = {p.getId().toString(), p.getName()};
+                options.add(opt);
+            }
+            return Response.status(200).entity(options).build();
+        }
+
+        return Response.status(200).build();
+    }
     @GET @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response findById(@PathParam("id") Long id) {
@@ -74,6 +90,24 @@ public class PracticeRestService extends BaseRestService {
             return Response.status(200).entity(data).build();
         } else {
             return Response.status(404).entity("The practice with the id " + id + " does not exist").build();
+        }
+    }
+    @GET @Path("current")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response findByToken(@Context HttpHeaders headers) {
+        try{
+            Long practiceId = Long.parseLong(TokenUtils.getPracticeIdFromToken(headers));
+            if(practiceId == null) {
+                throw  new Exception("The user doesn't login.");
+            }
+            Practice data = practiceDao.getPracticeById(practiceId);
+            if(data != null) {
+                return Response.status(200).entity(data).build();
+            } else {
+                return Response.status(404).entity("The practice with the id " + practiceId + " does not exist").build();
+            }
+        }catch (Exception ex){
+            return Response.status(500).entity(ex.getMessage()).build();
         }
     }
 
@@ -103,6 +137,13 @@ public class PracticeRestService extends BaseRestService {
         }
 
         return Response.status(status).entity(message).build();
+    }
+    @OPTIONS @Path("{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.TEXT_HTML})
+    @Transactional
+    public Response optionPracticeById(@Context HttpHeaders headers, @PathParam("id") Long id, Practice model) {
+        return Response.ok().build();
     }
 
     private boolean practiceWasUpdated(Practice data) {

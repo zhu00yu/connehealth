@@ -7,6 +7,7 @@
     <typeAliases>
         <typeAlias type="com.connehealth.entities.MasterData" alias="MasterData"/>
         <typeAlias type="com.connehealth.entities.User" alias="User"/>
+        <typeAlias type="com.connehealth.entities.PersistentLogin" alias="PersistentLogin"/>
         <typeAlias type="com.connehealth.entities.Podcast" alias="Podcast"/>
         <typeAlias type="com.connehealth.entities.UserProfile" alias="UserProfile"/>
         <typeAlias type="com.connehealth.entities.Practice" alias="Practice"/>

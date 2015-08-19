@@ -4,6 +4,7 @@ import com.connehealth.entities.Employee;
 import com.connehealth.entities.Practice;
 import com.connehealth.entities.Provider;
 import com.connehealth.entities.UserProfile;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,8 +13,11 @@ import java.util.List;
  */
 public interface EmployeeDao {
     public List<Employee> getEmployees();
+    public List<Employee> getPracticeEmployees(Long practiceId);
+    public List<UserProfile> getFreeUsers(Long practiceId);
 
     public Employee getEmployeeById(Long id);
+    public Employee getEmployeeByUser(@Param(value = "practiceId")Long practiceId, @Param(value = "userId")Long userId);
 /*
     public Employee getEmployeeByName(String name);
 */

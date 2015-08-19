@@ -31,28 +31,11 @@
     </select>
 
     <!-- ************** CREATE ************** -->
-    <insert id="createProvider" parameterType="Provider" useGeneratedKeys="true">
-        INSERT
-        INTO providers
-        SET
-            provider_id=#{id},
-            create_on=#{createOn},
-            create_by=#{createBy},
-            modify_on=#{modifyOn},
-            modify_by=#{modifyBy},
-            approve_on=#{approveOn},
-            approve_by=#{approveBy},
-            apply_on=#{applyOn},
-            is_approved=#{isApproved},
-            status=#{status},
-
-            certificate_no=#{certificateNo},
-            practice_no=#{practiceNo},
-            practice_location=#{practiceLocation},
-            primary_practice_name=#{primaryPracticeName},
-            professional_rank=#{professionalRank},
-            specialties=#{specialties},
-            skills=#{skills}
+    <insert id="createProvider" parameterType="Provider">
+        INSERT INTO providers
+        (provider_id,create_on,create_by,modify_on,modify_by,approve_on,approve_by,apply_on,is_approved,status,certificate_no,practice_no,practice_location,primary_practice_name,professional_rank,specialties,skills)
+        VALUES
+        (#{id},#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{approveOn},#{approveBy},#{applyOn},#{isApproved},#{status},#{certificateNo},#{practiceNo},#{practiceLocation},#{primaryPracticeName},#{professionalRank},#{specialties},#{skills})
     </insert>
 
     <!-- ************** READ ************** -->
