@@ -37,7 +37,12 @@ public class PatientFileRestService extends BaseRestService {
     public Response createPatientFile(@Context HttpHeaders headers, PatientFileTransfer model) {
         PatientFile file = model.toPatientFile();
         file = setAuditInfoForCreator(file, headers);
-        patientFileDao.createPatientFile(file);
+
+        try{
+            patientFileDao.createPatientFile(file);
+        }catch(Exception ex){
+            return Response.serverError().entity(ex.getMessage()).build();
+        }
 
         return Response.status(200).entity(file.getId()).build();
     }

@@ -10,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -38,7 +39,13 @@ public class PatientRestService extends BaseRestService {
     @Transactional
     public Response createPatient(@Context HttpHeaders headers, Patient model) {
         model = setAuditInfoForCreator(model, headers);
-        patientDao.createPatient(model);
+        UUID uuid = UUID.randomUUID();
+        model.setMrn(uuid.toString());
+        try{
+            patientDao.createPatient(model);
+        }catch (Exception ex){
+            return Response.serverError().entity(ex.getMessage()).build();
+        }
 
         return Response.status(200).entity(model.getId()).build();
     }
