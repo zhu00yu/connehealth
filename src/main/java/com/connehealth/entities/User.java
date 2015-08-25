@@ -8,6 +8,9 @@ import java.util.List;
 public class User {
     private Long userId;
     private String userName;
+    private String password;
+    private String salt;
+    private boolean enabled;
     private List<String> authorities;
 
 
@@ -27,11 +30,35 @@ public class User {
         this.userName = userName;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     public List<String> getAuthorities() {
         return authorities;
     }
 
     public void setAuthorities(List<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

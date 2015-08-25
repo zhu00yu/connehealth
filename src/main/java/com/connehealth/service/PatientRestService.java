@@ -40,14 +40,48 @@ public class PatientRestService extends BaseRestService {
     public Response createPatient(@Context HttpHeaders headers, Patient model) {
         model = setAuditInfoForCreator(model, headers);
         UUID uuid = UUID.randomUUID();
-        model.setMrn(uuid.toString());
+        model.setMrn(uuid.hashCode() + "");
         try{
+            model.setIdNo((String)getDefaultValue(model.getIdNo(), ""));
+            model.setSsn((String)getDefaultValue(model.getSsn(), ""));
+            model.setPatientName((String)getDefaultValue(model.getPatientName(), ""));
+            model.setGivenName((String)getDefaultValue(model.getGivenName(), ""));
+            model.setFamilyName((String)getDefaultValue(model.getFamilyName(), ""));
+            model.setSex((String)getDefaultValue(model.getSex(), ""));
+            model.setBloodType((String)getDefaultValue(model.getBloodType(), ""));
+            model.setEmail((String)getDefaultValue(model.getEmail(), ""));
+            model.setMobile((String)getDefaultValue(model.getMobile(), ""));
+            model.setEthnicity((String)getDefaultValue(model.getEthnicity(), ""));
+            model.setNationality((String)getDefaultValue(model.getNationality(), ""));
+            model.setNativePlace((String)getDefaultValue(model.getNativePlace(), ""));
+            model.setPreferredLanguage((String)getDefaultValue(model.getPreferredLanguage(), ""));
+            model.setRace((String)getDefaultValue(model.getRace(), ""));
+            model.setMaritalStatus((String)getDefaultValue(model.getMaritalStatus(), ""));
+
+            model.setCompany((String)getDefaultValue(model.getCompany(), ""));
+            model.setIndustry((String)getDefaultValue(model.getIndustry(), ""));
+            model.setContactPerson((String)getDefaultValue(model.getContactPerson(), ""));
+            model.setContactPhone((String)getDefaultValue(model.getContactPhone(), ""));
+            model.setContactRelationship((String)getDefaultValue(model.getContactRelationship(), ""));
+            model.setHomeAddress((String)getDefaultValue(model.getHomeAddress(), ""));
+            model.setHomeZip((String)getDefaultValue(model.getHomeZip(), ""));
+            model.setRegisteredAddress((String)getDefaultValue(model.getRegisteredAddress(), ""));
+            model.setRegisteredZip((String)getDefaultValue(model.getRegisteredZip(), ""));
+            model.setWorkAddress((String)getDefaultValue(model.getWorkAddress(), ""));
+            model.setWorkPhone((String)getDefaultValue(model.getWorkPhone(), ""));
+            model.setWorkZip((String)getDefaultValue(model.getWorkZip(), ""));
             patientDao.createPatient(model);
         }catch (Exception ex){
             return Response.serverError().entity(ex.getMessage()).build();
         }
 
         return Response.status(200).entity(model.getId()).build();
+    }
+    private Object getDefaultValue(Object value, Object defaultValue){
+        if (value == null){
+            return defaultValue;
+        }
+        return value;
     }
 
     @POST @Path("list")

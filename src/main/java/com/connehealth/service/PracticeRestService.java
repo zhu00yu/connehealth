@@ -43,9 +43,37 @@ public class PracticeRestService extends BaseRestService {
     @Transactional
     public Response createPractice(@Context HttpHeaders headers, Practice model) {
         model = setAuditInfoForCreator(model, headers);
-        practiceDao.createPractice(model);
+        try{
+            model.setName((String) getDefaultValue(model.getName(), ""));
+            model.setChainPracticeName((String) getDefaultValue(model.getChainPracticeName(), ""));
+            model.setType((String)getDefaultValue(model.getType(), ""));
+            model.setEmail((String) getDefaultValue(model.getEmail(), ""));
+            model.setAddress((String) getDefaultValue(model.getAddress(), ""));
+            model.setProvinceId((Integer) getDefaultValue(model.getProvinceId(), 0));
+            model.setDistrictId((Integer) getDefaultValue(model.getDistrictId(), 0));
+            model.setCityId((Integer) getDefaultValue(model.getCityId(), 0));
+            model.setZip((String) getDefaultValue(model.getZip(), ""));
+            model.setPracticeLicenseCode((String) getDefaultValue(model.getPracticeLicenseCode(), ""));
+            model.setIssuer((String) getDefaultValue(model.getIssuer(), ""));
+            model.setLegalPerson((String) getDefaultValue(model.getLegalPerson(), ""));
+            model.setPrincipal((String) getDefaultValue(model.getPrincipal(), ""));
+            model.setBusinessPhone((String) getDefaultValue(model.getBusinessPhone(), ""));
+            model.setBusinessLicenseCode((String) getDefaultValue(model.getBusinessLicenseCode(), ""));
+            model.setRegisteredFund((Integer) getDefaultValue(model.getRegisteredFund(), 0));
+            model.setNumberOfDoctors((Integer) getDefaultValue(model.getNumberOfDoctors(), 0));
+            model.setNumberOfBeds((Integer) getDefaultValue(model.getNumberOfBeds(), 0));
 
+            practiceDao.createPractice(model);
+        }catch(Exception ex){
+            return Response.serverError().entity(ex.getMessage()).build();
+        }
         return Response.status(200).entity(model.getId()).build();
+    }
+    private Object getDefaultValue(Object value, Object defaultValue){
+        if (value == null){
+            return defaultValue;
+        }
+        return value;
     }
 
     @POST @Path("list")

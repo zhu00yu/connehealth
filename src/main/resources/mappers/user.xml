@@ -6,6 +6,7 @@
     <resultMap id="userMap" type="User" >
         <id column="user_id" property="userId"  />
         <result column="username" property="userName" />
+        <result column="salt" property="salt" />
         <collection property="authorities" column="username" javaType="ArrayList" ofType="String" select="getAuthorityByUserName"/>
     </resultMap>
 
@@ -41,6 +42,14 @@
     <!-- ************** CREATE ************** -->
     <insert id="createLatestLoginedUser" parameterType="PersistentLogin">
         INSERT INTO persistent_logins (series,username,token,last_used) VALUES (#{series}, #{userName}, #{token}, #{lastUsed})
+    </insert>
+
+    <insert id="createUser" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO users (username, password, salt, enabled) VALUES (#{userName}, #{password}, #{salt}, #{enabled})
+    </insert>
+
+    <insert id="createAuthority">
+        INSERT INTO authorities (username, authority) VALUES (#{userName}, #{authority})
     </insert>
 
 </mapper>

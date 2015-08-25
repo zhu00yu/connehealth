@@ -23,7 +23,7 @@
 
     <!-- ************** CREATE ************** -->
     <insert id="createUserProfile" parameterType="UserProfile">
-        INSERT INTO podcasts
+        INSERT INTO user_profiles
         (user_id,create_on,status,family_name,given_name,dob,sex,email,mobile,province_id,city_id,district_id,zip,address)
         VALUES
         (#{id},#{createOn},#{status},#{familyName},#{givenName},#{dob},#{sex},#{email},#{mobile},#{provinceId},#{cityId},#{districtId},#{zip},#{address})

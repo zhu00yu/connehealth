@@ -20,7 +20,7 @@ public class EmployeeTransfer {
     private String familyName;
     private String givenName;
     private Date dob;
-    private Long sex;
+    private String sex;
     private String email;
     private String mobile;
     private Long provinceId;

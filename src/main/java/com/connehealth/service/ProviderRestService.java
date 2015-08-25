@@ -2,6 +2,7 @@ package com.connehealth.service;
 
 import com.connehealth.dao.ProviderDao;
 import com.connehealth.entities.Provider;
+import com.connehealth.entities.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +38,39 @@ public class ProviderRestService extends BaseRestService {
     @Transactional
     public Response createProvider(@Context HttpHeaders headers, Provider model) {
         model = setAuditInfoForCreator(model, headers);
-        providerDao.createProvider(model);
+        try{
+            UserProfile profile = model.getUserProfile();
+            profile.setGivenName((String)getDefaultValue(profile.getGivenName(), ""));
+            profile.setFamilyName((String)getDefaultValue(profile.getFamilyName(), ""));
+            profile.setSex((String)getDefaultValue(profile.getSex(), ""));
+            profile.setMobile((String)getDefaultValue(profile.getMobile(), ""));
+            profile.setEmail((String)getDefaultValue(profile.getEmail(), ""));
+            profile.setAddress((String)getDefaultValue(profile.getAddress(), ""));
+            profile.setZip((String)getDefaultValue(profile.getZip(), ""));
+            profile.setProvinceId((Long)getDefaultValue(profile.getProvinceId(), 0));
+            profile.setDistrictId((Long)getDefaultValue(profile.getDistrictId(), 0));
+            profile.setCityId((Long)getDefaultValue(profile.getCityId(), 0));
+
+            model.setSpecialties((String)getDefaultValue(model.getSpecialties(), ""));
+            model.setSkills((String) getDefaultValue(model.getSkills(), ""));
+            model.setProfessionalRank((String) getDefaultValue(model.getProfessionalRank(), ""));
+            model.setPrimaryPracticeName((String) getDefaultValue(model.getPrimaryPracticeName(), ""));
+            model.setPracticeNo((String) getDefaultValue(model.getPracticeNo(), ""));
+            model.setPracticeLocation((String) getDefaultValue(model.getPracticeLocation(), ""));
+            model.setCertificateNo((String) getDefaultValue(model.getCertificateNo(), ""));
+
+            providerDao.createProvider(model);
+        }catch(Exception ex){
+            return Response.serverError().entity(ex.getMessage()).build();
+        }
 
         return Response.status(200).entity(model.getId()).build();
+    }
+    private Object getDefaultValue(Object value, Object defaultValue){
+        if (value == null){
+            return defaultValue;
+        }
+        return value;
     }
 
     @POST @Path("list")

@@ -45,9 +45,30 @@ public class UserProfileRestService extends BaseRestService {
     @Consumes({MediaType.APPLICATION_JSON})
     @Transactional
     public Response createUserProfile(UserProfile model) {
-        userProfileDao.createUserProfile(model);
+        try{
+            UserProfile profile = model;
+            profile.setGivenName((String)getDefaultValue(profile.getGivenName(), ""));
+            profile.setFamilyName((String)getDefaultValue(profile.getFamilyName(), ""));
+            profile.setSex((String)getDefaultValue(profile.getSex(), ""));
+            profile.setMobile((String)getDefaultValue(profile.getMobile(), ""));
+            profile.setEmail((String)getDefaultValue(profile.getEmail(), ""));
+            profile.setAddress((String)getDefaultValue(profile.getAddress(), ""));
+            profile.setZip((String)getDefaultValue(profile.getZip(), ""));
+            profile.setProvinceId((Long)getDefaultValue(profile.getProvinceId(), 0));
+            profile.setDistrictId((Long)getDefaultValue(profile.getDistrictId(), 0));
+            profile.setCityId((Long)getDefaultValue(profile.getCityId(), 0));
 
+            userProfileDao.createUserProfile(model);
+        }catch(Exception ex){
+            return Response.serverError().entity(ex.getMessage()).build();
+        }
         return Response.status(200).entity(model.getId()).build();
+    }
+    private Object getDefaultValue(Object value, Object defaultValue){
+        if (value == null){
+            return defaultValue;
+        }
+        return value;
     }
 
     @POST @Path("list")
@@ -65,15 +86,6 @@ public class UserProfileRestService extends BaseRestService {
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<UserProfile> getUserProfiles(@Context HttpHeaders headers) {
-        try {
-            User user = getCurrentUser(headers);
-            if (user ==  null){
-                return null;
-            }
-        }catch (Exception ex){
-            String msg = ex.getMessage();
-        }
-
         return userProfileDao.getUserProfiles();
     }
 

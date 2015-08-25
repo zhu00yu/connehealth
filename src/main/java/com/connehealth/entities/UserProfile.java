@@ -11,7 +11,7 @@ public class UserProfile extends BaseEntity {
     private String familyName;
     private String givenName;
     private Date dob;
-    private Long sex;
+    private String sex;
     private String email;
     private String mobile;
     private Long provinceId;
@@ -47,11 +47,11 @@ public class UserProfile extends BaseEntity {
         this.dob = dob;
     }
 
-    public Long getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Long sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
