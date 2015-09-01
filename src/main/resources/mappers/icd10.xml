@@ -1,0 +1,32 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.Icd10Dao">
+
+    <resultMap id="icd10Map" type="Icd10" >
+        <id      property="id"                column="disease_id"  />
+        <result property="icdNo"         column="icd_no" />
+        <result property="additionalNo"       column="additional_no" />
+        <result property="mnemonics"     column="mnemonics" />
+        <result property="name"      column="name" />
+        <result property="englishName"            column="english_name" />
+    </resultMap>
+
+
+    <!-- ************** READ ************** -->
+    <select id="getIcds" resultMap="icd10Map">
+        SELECT * FROM icd_10_cn
+        WHERE icd_no LIKE CONCAT(#{term},'%')
+               OR additional_no LIKE CONCAT(#{term},'%')
+               OR mnemonics LIKE CONCAT(#{term},'%')
+               OR name LIKE CONCAT(#{term},'%')
+    </select>
+
+    <select id="getIcd" resultMap="icd10Map">
+        SELECT TOP 1 * FROM icd_10_cn WHERE icd_no = #{icdNo} AND additional_no = #{additionalNo};
+    </select>
+    <select id="getIcdById" resultMap="icd10Map" parameterType="Long">
+        SELECT TOP 1 * FROM icd_10_cn WHERE disease_id = #{value};
+    </select>
+
+</mapper>

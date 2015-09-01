@@ -14,7 +14,7 @@ import java.util.List;
 public interface EmployeeDao {
     public List<Employee> getEmployees();
     public List<Employee> getPracticeEmployees(Long practiceId);
-    public List<UserProfile> getFreeUsers(Long practiceId);
+    public List<UserProfile> getFreeUsers(@Param(value = "practiceId")Long practiceId, @Param(value = "name") String name);
 
     public Employee getEmployeeById(Long id);
     public Employee getEmployeeByUser(@Param(value = "practiceId")Long practiceId, @Param(value = "userId")Long userId);

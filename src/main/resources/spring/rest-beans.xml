@@ -22,6 +22,10 @@
 
     <bean id="masterDataRestService" class="com.connehealth.service.MasterDataRestService"  depends-on="masterDataDao">
         <property name="masterDataDao" ref="masterDataDao"/>
+        <property name="icd10Dao" ref="icd10Dao"/>
+        <property name="drugDao" ref="drugDao"/>
+        <property name="allergenDao" ref="allergenDao"/>
+        <property name="adverseReactionDao" ref="adverseReactionDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>
 
@@ -62,6 +66,16 @@
     </bean>
     <bean id="patientFileRestService" class="com.connehealth.service.PatientFileRestService"  depends-on="patientFileDao">
         <property name="patientFileDao" ref="patientFileDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="patientProblemRestService" class="com.connehealth.service.PatientProblemRestService"  depends-on="patientDao">
+        <property name="patientDao" ref="patientDao"/>
+        <property name="patientProblemDao" ref="patientProblemDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="patientMedicationRestService" class="com.connehealth.service.PatientMedicationRestService"  depends-on="patientDao">
+        <property name="patientDao" ref="patientDao"/>
+        <property name="patientMedicationDao" ref="patientMedicationDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>
 

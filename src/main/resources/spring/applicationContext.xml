@@ -51,5 +51,11 @@
         <jdbc:script encoding="UTF-8" location="classpath:test_data/account_data.sql" />
         <jdbc:script encoding="UTF-8" location="classpath:test_data/business_schema.sql" />
         <jdbc:script encoding="UTF-8" location="classpath:test_data/business_data.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/icd_10_schema.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/icd_10_data.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/drug_schema.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/drug_data.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/allergen_schema.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/allergen_data.sql" />
     </jdbc:initialize-database>
 </beans>

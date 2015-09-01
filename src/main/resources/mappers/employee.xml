@@ -51,7 +51,11 @@
     </select>
 
     <select id="getFreeUsers" resultMap="com.connehealth.dao.UserProfileDao.userProfileMap" parameterType="Long">
-        SELECT * FROM user_profiles WHERE user_id NOT IN (SELECT e.user_id FROM employees e WHERE practice_id=#{value});
+        SELECT * FROM user_profiles WHERE
+        user_id NOT IN (SELECT e.user_id FROM employees e WHERE practice_id=#{value})
+        <if test="name !=null">
+            AND (family_name LIKE CONCAT(#{name},'%') OR given_name LIKE CONCAT(#{name},'%'))
+        </if>;
     </select>
 
     <!--<select id="getProviderByName" resultMap="providerMap" parameterType="String">

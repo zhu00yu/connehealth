@@ -1,0 +1,102 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.PatientMedicationDao">
+
+    <resultMap id="patientMedicationMap" type="PatientMedication" >
+        <id property="id" column="medication_id"/>
+        <result property="createOn" column="create_on"/>
+        <result property="createBy" column="create_by"/>
+        <result property="modifyOn" column="modify_on"/>
+        <result property="modifyBy" column="modify_by"/>
+        <result property="status" column="status"/>
+        <result property="patientId" column="patient_id"/>
+        <result property="drugId" column="drug_id"/>
+        <result property="drugName" column="drug_name"/>
+        <result property="form" column="form"/>
+        <result property="strength" column="strength"/>
+        <result property="strengthUnit" column="strength_unit"/>
+        <result property="frequency" column="frequency"/>
+        <result property="currentStatus" column="current_status"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="diseaseId" column="disease_id"/>
+        <result property="icdNo" column="icd_no"/>
+        <result property="problemName" column="problem_name"/>
+        <result property="memo" column="memo"/>
+
+    </resultMap>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createPatientMedication" parameterType="PatientMedication" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO patient_medications
+        (create_on, create_by, modify_on, modify_by, status,
+         patient_id, drug_id, is_otc, drug_name, form, strength, strength_unit, frequency,
+         current_status, start_date, end_date,
+         disease_id, icd_no, problem_name,stop_reason, memo)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},
+         #{patientId},#{drugId},#{isOtc},#{drugName},#{form},#{strength},#{strengthUnit},#{frequency},
+         #{currentStatus},#{startDate},#{endDate},
+         #{diseaseId},#{icdNo},#{problemName},#{stopReason},#{memo})
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getPatientMedications" resultMap="patientMedicationMap">
+        SELECT * FROM patient_medications
+    </select>
+
+    <select id="getPatientMedicationsByPatient" resultMap="patientMedicationMap" parameterType="Long">
+        SELECT * FROM patient_medications WHERE patient_id=#{value};
+    </select>
+
+    <select id="getPatientMedicationById" resultMap="patientMedicationMap" parameterType="Long">
+        SELECT * FROM patient_medications WHERE medication_id=#{value};
+    </select>
+
+    <!--<select id="getPatientByName" resultMap="PatientMap" parameterType="String">
+        SELECT * FROM Patients WHERE name=#{value};
+    </select>-->
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updatePatientMedication" parameterType="PatientMedication">
+        UPDATE
+            patient_medications
+        SET
+            medication_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="status !=0">,status=#{status}</if>
+            <if test="patientId !=null">,patient_id=#{patientId}</if>
+            <if test="drugId !=null">,drug_id=#{drugId}</if>
+            <if test="drugName !=null">,drug_name=#{drugName}</if>
+            ,is_otc=#{isOtc}
+            <if test="form !=null">,form=#{form}</if>
+            <if test="strength !=null">,strength=#{strength}</if>
+            <if test="strengthUnit !=null">,strength_unit=#{strengthUnit}</if>
+            <if test="frequency !=null">,frequency=#{frequency}</if>
+            <if test="currentStatus !=null">,current_status=#{currentStatus}</if>
+            <if test="startDate !=null">,start_date=#{startDate}</if>
+            <if test="endDate !=null">,end_date=#{endDate}</if>
+            <if test="diseaseId !=null">,disease_id=#{diseaseId}</if>
+            <if test="icdNo !=null">,icd_no=#{icdNo}</if>
+            <if test="problemName !=null">,problem_name=#{problemName}</if>
+            <if test="stopReason !=null">,stop_reason=#{stopReason}</if>
+            <if test="memo !=null">,memo=#{memo}</if>
+        WHERE
+            medication_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deletePatientMedicationById" parameterType="Long">
+        DELETE FROM patient_problems WHERE problem_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deletePatientMedications">
+        TRUNCATE TABLE patient_medications
+    </delete>
+
+</mapper>

@@ -26,7 +26,7 @@ public class MyDemoApplication extends ResourceConfig {
         register(RequestContextFilter.class);
         register(JacksonFeature.class);
         register(LoggingResponseFilter.class);
-        register(CORSResponseFilter.class);
+//        register(CORSResponseFilter.class);
 
         /*register(UserRestService.class);
         register(UserProfileRestService.class);

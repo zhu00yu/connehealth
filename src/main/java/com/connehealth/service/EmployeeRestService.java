@@ -107,11 +107,11 @@ public class EmployeeRestService extends BaseRestService {
 
     @GET @Path("practice/{id}/users")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getUsers(@Context HttpHeaders headers, @PathParam("id") Long id) {
+    public Response getUsers(@Context HttpHeaders headers, @PathParam("id") Long id, @QueryParam("q") String q) {
         List<Map<String, String>> options = new ArrayList<>();
-
+        String term = q;
         try{
-            List<UserProfile> users = employeeDao.getFreeUsers(id);
+            List<UserProfile> users = employeeDao.getFreeUsers(id, term);
             for(UserProfile u : users){
                 Map<String, String> m = new HashMap<String, String>();
                 m.put("id", u.getId().toString());

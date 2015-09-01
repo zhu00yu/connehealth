@@ -110,6 +110,7 @@ public class PracticeRestService extends BaseRestService {
 
         return Response.status(200).build();
     }
+
     @GET @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response findById(@PathParam("id") Long id) {
@@ -120,6 +121,7 @@ public class PracticeRestService extends BaseRestService {
             return Response.status(404).entity("The practice with the id " + id + " does not exist").build();
         }
     }
+
     @GET @Path("current")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response findByToken(@Context HttpHeaders headers) {

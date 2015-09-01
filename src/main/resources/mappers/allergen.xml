@@ -1,0 +1,83 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.AllergenDao">
+
+    <resultMap id="allergenMap" type="Allergen" >
+        <id      property="id"                column="allergen_id"  />
+        <result property="type"         column="type"  />
+        <result property="code"         column="code"  />
+        <result property="mnemonics"         column="mnemonics"  />
+        <result property="name"         column="name"  />
+        <result property="parentId"         column="parent_id"  />
+        <result property="createOn"         column="create_on"  />
+        <result property="createBy"         column="create_by"  />
+        <result property="modifyOn"         column="modify_on"  />
+        <result property="modifyBy"         column="modify_by"  />
+        <result property="status"         column="status"  />
+    </resultMap>
+
+
+    <!-- ************** READ ************** -->
+    <select id="getAllergens" resultMap="allergenMap">
+        SELECT * FROM allergens
+        <where>
+            <if test="term !=null and term != ''">
+              (code LIKE CONCAT('%',#{term},'%')
+               OR mnemonics LIKE CONCAT('%',#{term},'%')
+               OR name LIKE CONCAT('%',#{term},'%'))
+            </if>
+            <if test="type !=null and type != ''">
+               AND type=#{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="getAllergen" resultMap="allergenMap">
+        SELECT TOP 1 * FROM allergens WHERE type=#{type} AND code=#{code};
+    </select>
+    <select id="getAllergenById" resultMap="allergenMap" parameterType="Long">
+        SELECT TOP 1 * FROM allergens WHERE allergen_id = #{value};
+    </select>
+
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createAllergen" parameterType="Allergen" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO allergens
+        (create_on,create_by,modify_on,modify_by,status,type, code, mnemonics, name, parent_id)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},#{type},#{code},#{mnemonics},#{name},#{parentId})
+    </insert>
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updateAllergen" parameterType="Allergen">
+        UPDATE
+        allergens
+        SET
+        allergen_id=#{id}
+        <if test="createOn !=null">,create_on=#{createOn}</if>
+        <if test="createBy !=null">,create_by=#{createBy}</if>
+        <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+        <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+        <if test="status !=0">,status=#{status}</if>
+
+        <if test="type !=null">,type=#{type}</if>
+        <if test="code !=null">,code=#{code}</if>
+        <if test="mnemonics !=null">,mnemonics=#{mnemonics}</if>
+        <if test="name !=null">,name=#{name}</if>
+        <if test="parentId !=null">,parent_id=#{parentId}</if>
+        WHERE
+        allergen_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deleteAllergenById" parameterType="Long">
+        DELETE FROM allergens WHERE allergen_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deleteAllergens">
+        TRUNCATE TABLE allergens
+    </delete>
+
+</mapper>

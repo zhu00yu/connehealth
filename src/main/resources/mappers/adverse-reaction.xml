@@ -1,0 +1,85 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.AdverseReactionDao">
+
+    <resultMap id="adverseReactionMap" type="AdverseReaction" >
+        <id      property="id"                column="reaction_id"  />
+        <result property="type"         column="type"  />
+        <result property="code"         column="code"  />
+        <result property="mnemonics"         column="mnemonics"  />
+        <result property="reaction"         column="reaction"  />
+        <result property="level"         column="level"  />
+        <result property="parentId"         column="parent_id"  />
+        <result property="createOn"         column="create_on"  />
+        <result property="createBy"         column="create_by"  />
+        <result property="modifyOn"         column="modify_on"  />
+        <result property="modifyBy"         column="modify_by"  />
+        <result property="status"         column="status"  />
+    </resultMap>
+
+
+    <!-- ************** READ ************** -->
+    <select id="getAdverseReactions" resultMap="adverseReactionMap">
+        SELECT * FROM adverse_reactions
+        <where>
+            <if test="term !=null and term != ''">
+              (code LIKE CONCAT('%',#{term},'%')
+               OR mnemonics LIKE CONCAT('%',#{term},'%')
+               OR reaction LIKE CONCAT('%',#{term},'%'))
+            </if>
+            <if test="type !=null and type != ''">
+               AND type=#{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="getAdverseReaction" resultMap="adverseReactionMap">
+        SELECT TOP 1 * FROM adverse_reactions WHERE type=#{type} AND code=#{code};
+    </select>
+    <select id="getAdverseReactionById" resultMap="adverseReactionMap" parameterType="Long">
+        SELECT TOP 1 * FROM adverse_reactions WHERE reaction_id = #{value};
+    </select>
+
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createAdverseReaction" parameterType="AdverseReaction" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO adverse_reactions
+        (create_on,create_by,modify_on,modify_by,status,type, code, mnemonics, name, level, parent_id)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},#{type},#{code},#{mnemonics},#{reaction},#{level},#{parentId})
+    </insert>
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updateAdverseReaction" parameterType="AdverseReaction">
+        UPDATE
+        adverse_reactions
+        SET
+        reaction_id=#{id}
+        <if test="createOn !=null">,create_on=#{createOn}</if>
+        <if test="createBy !=null">,create_by=#{createBy}</if>
+        <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+        <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+        <if test="status !=0">,status=#{status}</if>
+
+        <if test="type !=null">,type=#{type}</if>
+        <if test="code !=null">,code=#{code}</if>
+        <if test="mnemonics !=null">,mnemonics=#{mnemonics}</if>
+        <if test="reaction !=null">,reaction=#{reaction}</if>
+        <if test="level !=null">,level=#{level}</if>
+        <if test="parentId !=null">,parent_id=#{parentId}</if>
+        WHERE
+        reaction_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deleteAdverseReactionById" parameterType="Long">
+        DELETE FROM adverse_reactions WHERE reaction_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deleteAdverseReactions">
+        TRUNCATE TABLE adverse_reactions
+    </delete>
+
+</mapper>
