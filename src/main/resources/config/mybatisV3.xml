@@ -22,6 +22,8 @@
         <typeAlias type="com.connehealth.entities.AdverseReaction" alias="AdverseReaction"/>
         <typeAlias type="com.connehealth.entities.PatientProblem" alias="PatientProblem"/>
         <typeAlias type="com.connehealth.entities.PatientMedication" alias="PatientMedication"/>
+        <typeAlias type="com.connehealth.entities.PatientAllergy" alias="PatientAllergy"/>
+        <typeAlias type="com.connehealth.entities.PatientAdverseReaction" alias="PatientAdverseReaction"/>
     </typeAliases>
     <mappers>
         <mapper resource="mappers/master-data.xml" />
@@ -40,5 +42,7 @@
         <mapper resource="mappers/adverse-reaction.xml" />
         <mapper resource="mappers/patient-problem.xml" />
         <mapper resource="mappers/patient-medication.xml" />
+        <mapper resource="mappers/patient-allergy.xml" />
+        <mapper resource="mappers/patient-adverse-reaction.xml" />
     </mappers>
 </configuration>

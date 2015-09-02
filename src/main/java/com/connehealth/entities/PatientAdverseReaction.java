@@ -7,8 +7,9 @@ import java.util.Date;
  */
 public class PatientAdverseReaction extends AuditableEntity {
     private Long patientId;
-    private Long allergenId;
+    private Long allergyId;
     private Long adverseReactionId;
+    private String reaction;
 
 
     public Long getPatientId() {
@@ -19,12 +20,12 @@ public class PatientAdverseReaction extends AuditableEntity {
         this.patientId = patientId;
     }
 
-    public Long getAllergenId() {
-        return allergenId;
+    public Long getAllergyId() {
+        return allergyId;
     }
 
-    public void setAllergenId(Long allergenId) {
-        this.allergenId = allergenId;
+    public void setAllergyId(Long allergyId) {
+        this.allergyId = allergyId;
     }
 
     public Long getAdverseReactionId() {
@@ -33,5 +34,13 @@ public class PatientAdverseReaction extends AuditableEntity {
 
     public void setAdverseReactionId(Long adverseReactionId) {
         this.adverseReactionId = adverseReactionId;
+    }
+
+    public String getReaction() {
+        return reaction;
+    }
+
+    public void setReaction(String reaction) {
+        this.reaction = reaction;
     }
 }

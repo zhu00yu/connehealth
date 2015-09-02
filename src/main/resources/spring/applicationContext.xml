@@ -57,5 +57,7 @@
         <jdbc:script encoding="UTF-8" location="classpath:test_data/drug_data.sql" />
         <jdbc:script encoding="UTF-8" location="classpath:test_data/allergen_schema.sql" />
         <jdbc:script encoding="UTF-8" location="classpath:test_data/allergen_data.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/adverse_reaction_schema.sql" />
+        <jdbc:script encoding="UTF-8" location="classpath:test_data/adverse_reaction_data.sql" />
     </jdbc:initialize-database>
 </beans>

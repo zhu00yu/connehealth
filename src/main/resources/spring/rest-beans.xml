@@ -78,5 +78,13 @@
         <property name="patientMedicationDao" ref="patientMedicationDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>
+    <bean id="patientAllergyRestService" class="com.connehealth.service.PatientAllergyRestService"  depends-on="patientDao">
+        <property name="patientDao" ref="patientDao"/>
+        <property name="patientAllergyDao" ref="patientAllergyDao"/>
+        <property name="patientAdverseReactionDao" ref="patientAdverseReactionDao"/>
+        <property name="allergenDao" ref="allergenDao"/>
+        <property name="adverseReactionDao" ref="adverseReactionDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
 
 </beans>

@@ -1,6 +1,7 @@
 package com.connehealth.entities;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhuyu on 2015/8/27.
@@ -15,6 +16,7 @@ public class PatientAllergy extends AuditableEntity {
     private String currentStatus;
     private Date startDate;
     private String memo;
+    private List<PatientAdverseReaction> reactions;
 
 
     public Long getPatientId() {
@@ -87,5 +89,13 @@ public class PatientAllergy extends AuditableEntity {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public List<PatientAdverseReaction> getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(List<PatientAdverseReaction> reactions) {
+        this.reactions = reactions;
     }
 }

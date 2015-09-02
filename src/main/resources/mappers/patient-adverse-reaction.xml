@@ -1,0 +1,79 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.PatientAdverseReactionDao">
+
+    <resultMap id="patientAdverseReactionMap" type="PatientAdverseReaction" >
+        <id property="id" column="allergy_reaction_id" />
+        <result property="createOn" column="create_on" />
+        <result property="createBy" column="create_by" />
+        <result property="modifyOn" column="modify_on" />
+        <result property="modifyBy" column="modify_by" />
+        <result property="status" column="status" />
+
+        <result property="patientId" column="patient_id" />
+        <result property="allergyId" column="allergy_id" />
+        <result property="adverseReactionId" column="adverse_reaction_id" />
+        <result property="reaction" column="reaction" />
+    </resultMap>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createPatientAdverseReaction" parameterType="PatientAdverseReaction" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO patient_adverse_reactions
+        (create_on,create_by,modify_on,modify_by,status, patient_id, allergy_id, adverse_reaction_id, reaction)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},#{patientId},#{allergyId},#{adverseReactionId},#{reaction})
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getPatientAdverseReactions" resultMap="patientAdverseReactionMap">
+        SELECT * FROM patient_adverse_reactions
+    </select>
+
+    <select id="getPatientAdverseReactionsByPatient" resultMap="patientAdverseReactionMap" parameterType="Long">
+        SELECT * FROM patient_adverse_reactions WHERE patient_id=#{value};
+    </select>
+
+    <select id="getPatientAdverseReactionsByAllergy" resultMap="patientAdverseReactionMap" parameterType="Long">
+        SELECT * FROM patient_adverse_reactions WHERE allergy_id=#{value};
+    </select>
+
+    <select id="getPatientAdverseReactionById" resultMap="patientAdverseReactionMap" parameterType="Long">
+        SELECT * FROM patient_adverse_reactions WHERE allergy_reaction_id=#{value};
+    </select>
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updatePatientAdverseReaction" parameterType="PatientAdverseReaction">
+        UPDATE
+            patient_adverse_reactions
+        SET
+            allergy_reaction_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="status !=0">,status=#{status}</if>
+
+            <if test="patientId !=null">,patient_id=#{patientId}</if>
+            <if test="allergyId !=null">,allergy_id=#{allergyId}</if>
+            <if test="adverseReactionId !=null">,adverse_reaction_id=#{adverseReactionId}</if>
+            <if test="reaction !=null">,reaction=#{reaction}</if>
+        WHERE
+            allergy_reaction_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deletePatientAdverseReactionById" parameterType="Long">
+        DELETE FROM patient_adverse_reactions WHERE allergy_reaction_id = #{value}
+    </delete>
+
+    <delete id="deletePatientAdverseReactionByAllergy" parameterType="Long">
+        DELETE FROM patient_adverse_reactions WHERE allergy_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deletePatientAdverseReactions">
+        TRUNCATE TABLE patient_adverse_reactions
+    </delete>
+
+</mapper>
