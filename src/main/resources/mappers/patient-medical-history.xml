@@ -1,0 +1,97 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.PatientMedicalHistoryDao">
+
+    <resultMap id="patientMedicalHistoryMap" type="PatientMedicalHistory" >
+        <id property="id" column="history_id" />
+        <result property="createOn" column="create_on" />
+        <result property="createBy" column="create_by" />
+        <result property="modifyOn" column="modify_on" />
+        <result property="modifyBy" column="modify_by" />
+        <result property="status" column="status" />
+        <result property="patientId" column="patient_id" />
+
+        <result property="problem" column="problem" />
+        <result property="therapyCode" column="therapy_code" />
+        <result property="therapy" column="therapy" />
+        <result property="goals" column="goals" />
+        <result property="outcome" column="outcome" />
+        <result property="practiceName" column="practice_name" />
+        <result property="attendingDoctor" column="attending_doctor" />
+        <result property="anesthetist" column="anesthetist" />
+        <result property="therapyDate" column="therapy_date" />
+        <result property="recordDate" column="record_date" />
+        <result property="isHospitalized" column="is_hospitalized" />
+        <result property="residency" column="residency" />
+        <result property="admissionDate" column="admission_date" />
+        <result property="dischargeDate" column="discharge_date" />
+        <result property="dischargeSummaryFileId" column="discharge_summary_file_id" />
+        <result property="memo" column="memo" />
+    </resultMap>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createPatientMedicalHistory" parameterType="PatientMedicalHistory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO patient_medical_histories
+        (create_on,create_by,modify_on,modify_by,status, patient_id, problem, therapy_code, therapy, goals, outcome, practice_name, attending_doctor, anesthetist, therapy_date, record_date, is_hospitalized, residency, admission_date, discharge_date, discharge_summary_file_id, memo)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},#{patientId},#{problem},#{therapyCode},#{therapy},#{goals},#{outcome},#{practiceName},#{attendingDoctor},#{anesthetist},#{therapyDate},#{recordDate},#{isHospitalized},#{residency},#{admissionDate},#{dischargeDate},#{dischargeSummaryFileId},#{memo})
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getPatientMedicalHistories" resultMap="patientMedicalHistoryMap">
+        SELECT * FROM patient_medical_histories
+    </select>
+
+    <select id="getPatientMedicalHistoriesByPatient" resultMap="patientMedicalHistoryMap" parameterType="Long">
+        SELECT * FROM patient_medical_histories WHERE patient_id=#{value};
+    </select>
+
+    <select id="getPatientMedicalHistoryById" resultMap="patientMedicalHistoryMap" parameterType="Long">
+        SELECT * FROM patient_medical_histories WHERE history_id=#{value};
+    </select>
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updatePatientMedicalHistory" parameterType="PatientMedicalHistory">
+        UPDATE
+            patient_medical_histories
+        SET
+            history_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="status !=0">,status=#{status}</if>
+
+            <if test="patientId !=null">,patient_id=#{patientId}</if>
+            <if test="problem !=null">,problem=#{problem}</if>
+            <if test="therapyCode !=null">,therapy_code=#{therapyCode}</if>
+            <if test="therapy !=null">,therapy=#{therapy}</if>
+            <if test="goals !=null">,goals=#{goals}</if>
+            <if test="outcome !=null">,outcome=#{outcome}</if>
+            <if test="practiceName !=null">,practice_name=#{practiceName}</if>
+            <if test="attendingDoctor !=null">,attending_doctor=#{attendingDoctor}</if>
+            <if test="anesthetist !=null">,anesthetist=#{anesthetist}</if>
+            <if test="therapyDate !=null">,therapy_date=#{therapyDate}</if>
+            <if test="recordDate !=null">,record_date=#{recordDate}</if>
+            ,is_hospitalized=#{isHospitalized}
+            <if test="residency !=null">,residency=#{residency}</if>
+            <if test="admissionDate !=null">,admission_date=#{admissionDate}</if>
+            <if test="dischargeDate !=null">,discharge_date=#{dischargeDate}</if>
+            <if test="dischargeSummaryFileId !=null">,discharge_summary_file_id=#{dischargeSummaryFileId}</if>
+            <if test="memo !=null">,memo=#{memo}</if>
+        WHERE
+            history_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deletePatientMedicalHistoryById" parameterType="Long">
+        DELETE FROM patient_medical_histories WHERE history_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deletePatientMedicalHistories">
+        TRUNCATE TABLE patient_medical_histories
+    </delete>
+
+</mapper>

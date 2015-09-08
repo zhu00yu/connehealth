@@ -1,0 +1,87 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.PatientSocialHistoryDao">
+
+    <resultMap id="patientSocialHistoryMap" type="PatientSocialHistory" >
+        <id property="id" column="history_id" />
+        <result property="createOn" column="create_on" />
+        <result property="createBy" column="create_by" />
+        <result property="modifyOn" column="modify_on" />
+        <result property="modifyBy" column="modify_by" />
+        <result property="status" column="status" />
+        <result property="patientId" column="patient_id" />
+
+        <result property="maritalStatus" column="marital_status" />
+        <result property="smokingStatus" column="smoking_status" />
+        <result property="coffeeStatus" column="coffee_status" />
+        <result property="hivStatus" column="hiv_status" />
+        <result property="drinkStatus" column="drink_status" />
+        <result property="drugStatus" column="drug_status" />
+        <result property="occupation" column="occupation" />
+        <result property="religion" column="religion" />
+        <result property="hobby" column="hobby" />
+        <result property="memo" column="memo" />
+    </resultMap>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createPatientSocialHistory" parameterType="PatientSocialHistory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO patient_Social_histories
+        (create_on,create_by,modify_on,modify_by,status, patient_id,
+        marital_status,smoking_status,coffee_status,hiv_status,drink_status,drug_status,occupation,religion,hobby, memo)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},#{patientId},
+        #{maritalStatus},#{smokingStatus},#{coffeeStatus},#{hivStatus},#{drinkStatus},#{drugStatus},#{occupation},#{religion},#{hobby},#{memo})
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getPatientSocialHistories" resultMap="patientSocialHistoryMap">
+        SELECT * FROM patient_social_histories
+    </select>
+
+    <select id="getPatientSocialHistoriesByPatient" resultMap="patientSocialHistoryMap" parameterType="Long">
+        SELECT * FROM patient_social_histories WHERE patient_id=#{value};
+    </select>
+
+    <select id="getPatientSocialHistoryById" resultMap="patientSocialHistoryMap" parameterType="Long">
+        SELECT * FROM patient_social_histories WHERE history_id=#{value};
+    </select>
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updatePatientSocialHistory" parameterType="PatientSocialHistory">
+        UPDATE
+            patient_social_histories
+        SET
+            history_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="status !=0">,status=#{status}</if>
+
+            <if test="patientId !=null">,patient_id=#{patientId}</if>
+            <if test="maritalStatus !=null">,marital_status=#{maritalStatus}</if>
+            <if test="smokingStatus !=null">,smoking_status=#{smokingStatus}</if>
+            <if test="coffeeStatus !=null">,coffee_status=#{coffeeStatus}</if>
+            <if test="hivStatus !=null">,hiv_status=#{hivStatus}</if>
+            <if test="drinkStatus !=null">,drink_status=#{drinkStatus}</if>
+            <if test="drugStatus !=null">,drug_status=#{drugStatus}</if>
+            <if test="occupation !=null">,occupation=#{occupation}</if>
+            <if test="religion !=null">,religion=#{religion}</if>
+            <if test="hobby !=null">,hobby=#{hobby}</if>
+            <if test="memo !=null">,memo=#{memo}</if>
+        WHERE
+            history_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deletePatientSocialHistoryById" parameterType="Long">
+        DELETE FROM patient_social_histories WHERE history_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deletePatientSocialHistories">
+        TRUNCATE TABLE patient_social_histories
+    </delete>
+
+</mapper>

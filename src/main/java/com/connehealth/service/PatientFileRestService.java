@@ -50,7 +50,7 @@ public class PatientFileRestService extends BaseRestService {
     @POST @Path("list")
     @Consumes({MediaType.APPLICATION_JSON})
     @Transactional
-    public Response createPatientsFile(@Context HttpHeaders headers, List<PatientFileTransfer> model) {
+    public Response createPatientFiles(@Context HttpHeaders headers, List<PatientFileTransfer> model) {
         for(PatientFileTransfer item : model){
             PatientFile file = item.toPatientFile();
             file = setAuditInfoForCreator(file, headers);
@@ -73,20 +73,23 @@ public class PatientFileRestService extends BaseRestService {
     }
 
     @GET
-    @Path("{id}/data")
-    @Produces("image/*")
-    public Response findDataById(@PathParam("id") Long id) {
+    @Path("{id}/data/{filename}")
+    @Produces({MediaType.APPLICATION_OCTET_STREAM, "application/pdf", "image/*", "audio/*", "video/*"})
+    public Response findDataById(@PathParam("id") Long id, @PathParam("filename") String filename) {
         PatientFile patientFile = patientFileDao.getPatientFileById(id);
         if (patientFile == null) {
             throw new WebApplicationException(404);
         }
-        String fileName = patientFile.getFileName();
+        String fileName = filename == null ? patientFile.getFileName() : filename;
         String mt = new MimetypesFileTypeMap().getContentType(fileName);
 
         byte[] fileData = patientFile.getFileData();
-        fileData = DataUrlUtil.convertToImage(fileData);
+        fileData = DataUrlUtil.convertToBytes(fileData);
+        if (fileName.toLowerCase().endsWith(".pdf")){
+            mt = "application/pdf";
+        }
 
-        return Response.ok().type(mt).entity(fileData).build();
+        return Response.ok().type(mt).header("content-disposition","attachment; filename=" + fileName).entity(fileData).build();
     }
 
     @GET

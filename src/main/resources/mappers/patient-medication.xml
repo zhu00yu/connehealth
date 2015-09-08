@@ -91,7 +91,7 @@
 
     <!-- ************** DELETE ************** -->
     <delete id="deletePatientMedicationById" parameterType="Long">
-        DELETE FROM patient_problems WHERE problem_id = #{value}
+        DELETE FROM patient_medications WHERE medication_id = #{value}
     </delete>
 
     <!-- DELETE all -->

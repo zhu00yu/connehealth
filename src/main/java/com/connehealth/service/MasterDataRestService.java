@@ -56,6 +56,12 @@ public class MasterDataRestService extends BaseRestService {
         this.adverseReactionDao = adverseReactionDao;
     }
 
+    @Autowired
+    protected VaccineDao vaccineDao;
+    public void setVaccineDao(VaccineDao vaccineDao) {
+        this.vaccineDao = vaccineDao;
+    }
+
     @Context
     Request request;
 
@@ -361,6 +367,70 @@ public class MasterDataRestService extends BaseRestService {
                         Map<String, String> m = new HashMap<String, String>();
                         m.put("id", p.getId().toString());
                         m.put("text", p.getReaction());
+                        options.add(m);
+                    }
+                    return Response.status(200).entity(options).build();
+                }
+
+            }catch(Exception ex){
+                return Response.serverError().entity(ex.getMessage()).build();
+            }
+        }
+
+        return Response.status(200).build();
+    }
+
+
+    // For VACCINE
+    @GET @Path("vaccine/list/{term}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response findVaccine(@PathParam("term") String term) {
+
+        List<Vaccine> vaccines = new ArrayList<Vaccine>();
+        try{
+            vaccines = vaccineDao.getVaccines(term.toUpperCase());
+        } catch(Exception ex){
+            return Response.serverError().entity(ex.getMessage()).build();
+        }
+
+        if(vaccines != null && vaccines.size() > 0) {
+            return Response.status(200).entity(vaccines).build();
+        } else {
+            return Response.status(404).entity("The Vaccine with the " + term + " does not exist").build();
+        }
+    }
+
+    @GET @Path("vaccine/{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response findVaccineById(@PathParam("id") Long id) {
+
+        Vaccine vaccine = null;
+        try{
+            vaccine = vaccineDao.getVaccineById(id);
+        } catch(Exception ex){
+            return Response.serverError().entity(ex.getMessage()).build();
+        }
+
+        if(vaccine != null) {
+            return Response.status(200).entity(vaccine).build();
+        } else {
+            return Response.status(404).entity("The Vaccine with the id " + id + " does not exist").build();
+        }
+    }
+
+    @GET @Path("vaccine/query/options")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response getVaccineOptions(@QueryParam("q") String q) {
+        String term = q;
+        List<Map<String, String>> options = new ArrayList<Map<String, String>>();
+        if (term != null){
+            try{
+                List<Vaccine> vaccines = vaccineDao.getVaccines(term.toUpperCase());
+                if(vaccines != null) {
+                    for(Vaccine p : vaccines){
+                        Map<String, String> m = new HashMap<String, String>();
+                        m.put("id", p.getId().toString());
+                        m.put("text", p.getFullName());
                         options.add(m);
                     }
                     return Response.status(200).entity(options).build();

@@ -26,6 +26,7 @@
         <property name="drugDao" ref="drugDao"/>
         <property name="allergenDao" ref="allergenDao"/>
         <property name="adverseReactionDao" ref="adverseReactionDao"/>
+        <property name="vaccineDao" ref="vaccineDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>
 
@@ -84,6 +85,21 @@
         <property name="patientAdverseReactionDao" ref="patientAdverseReactionDao"/>
         <property name="allergenDao" ref="allergenDao"/>
         <property name="adverseReactionDao" ref="adverseReactionDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="patientMedicalHistoryRestService" class="com.connehealth.service.PatientMedicalHistoryRestService"  depends-on="patientDao">
+        <property name="patientDao" ref="patientDao"/>
+        <property name="patientMedicalHistoryDao" ref="patientMedicalHistoryDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="patientVaccineRestService" class="com.connehealth.service.PatientVaccineRestService"  depends-on="patientDao">
+        <property name="patientDao" ref="patientDao"/>
+        <property name="patientVaccineDao" ref="patientVaccineDao"/>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="patientSocialHistoryRestService" class="com.connehealth.service.PatientSocialHistoryRestService"  depends-on="patientDao">
+        <property name="patientDao" ref="patientDao"/>
+        <property name="patientSocialHistoryDao" ref="patientSocialHistoryDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>
 

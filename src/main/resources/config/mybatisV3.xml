@@ -18,12 +18,16 @@
         <typeAlias type="com.connehealth.entities.PatientFile" alias="PatientFile"/>
         <typeAlias type="com.connehealth.entities.Icd10" alias="Icd10"/>
         <typeAlias type="com.connehealth.entities.Drug" alias="Drug"/>
+        <typeAlias type="com.connehealth.entities.Vaccine" alias="Vaccine"/>
         <typeAlias type="com.connehealth.entities.Allergen" alias="Allergen"/>
         <typeAlias type="com.connehealth.entities.AdverseReaction" alias="AdverseReaction"/>
         <typeAlias type="com.connehealth.entities.PatientProblem" alias="PatientProblem"/>
         <typeAlias type="com.connehealth.entities.PatientMedication" alias="PatientMedication"/>
         <typeAlias type="com.connehealth.entities.PatientAllergy" alias="PatientAllergy"/>
         <typeAlias type="com.connehealth.entities.PatientAdverseReaction" alias="PatientAdverseReaction"/>
+        <typeAlias type="com.connehealth.entities.PatientMedicalHistory" alias="PatientMedicalHistory"/>
+        <typeAlias type="com.connehealth.entities.PatientVaccine" alias="PatientVaccine"/>
+        <typeAlias type="com.connehealth.entities.PatientSocialHistory" alias="PatientSocialHistory"/>
     </typeAliases>
     <mappers>
         <mapper resource="mappers/master-data.xml" />
@@ -38,11 +42,15 @@
         <mapper resource="mappers/patient-file.xml" />
         <mapper resource="mappers/icd10.xml" />
         <mapper resource="mappers/drug.xml" />
+        <mapper resource="mappers/vaccine.xml" />
         <mapper resource="mappers/allergen.xml" />
         <mapper resource="mappers/adverse-reaction.xml" />
         <mapper resource="mappers/patient-problem.xml" />
         <mapper resource="mappers/patient-medication.xml" />
         <mapper resource="mappers/patient-allergy.xml" />
         <mapper resource="mappers/patient-adverse-reaction.xml" />
+        <mapper resource="mappers/patient-medical-history.xml" />
+        <mapper resource="mappers/patient-vaccine.xml" />
+        <mapper resource="mappers/patient-social-history.xml" />
     </mappers>
 </configuration>

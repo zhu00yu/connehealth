@@ -99,14 +99,19 @@ public class PracticeRestService extends BaseRestService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getOptions() {
         List<String[]> options = new ArrayList<String[]>();
-        List<Practice> data = practiceDao.getPractices();
-        if(data != null) {
-            for(Practice p : data){
-                String opt[] = {p.getId().toString(), p.getName()};
-                options.add(opt);
+        try {
+            List<Practice> data = practiceDao.getPractices();
+            if(data != null) {
+                for(Practice p : data){
+                    String opt[] = {p.getId().toString(), p.getName()};
+                    options.add(opt);
+                }
+                return Response.status(200).entity(options).build();
             }
-            return Response.status(200).entity(options).build();
+        } catch (Exception ex){
+            return Response.serverError().entity(ex.getMessage()).build();
         }
+
 
         return Response.status(200).build();
     }

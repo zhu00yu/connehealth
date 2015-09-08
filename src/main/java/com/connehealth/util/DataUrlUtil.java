@@ -9,7 +9,20 @@ import java.io.UnsupportedEncodingException;
  * Created by zhuyu on 2015/8/11.
  */
 public class DataUrlUtil {
-    public static byte[] convertToImage(String dataUrl){
+    public static byte[] convertToImage(byte[] dbData){
+        byte[] fileData = null;
+        try {
+            String dataUrl = new String(dbData, "UTF-8");
+            fileData = convertToBytes(dataUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (fileData == null){
+            fileData = dbData;
+        }
+        return fileData;
+    }
+    public static byte[] convertToBytes(String dataUrl){
         byte[] fileData = null;
         String encodingPrefix = "base64,";
         int contentStartIndex = dataUrl.indexOf(encodingPrefix);
@@ -25,11 +38,11 @@ public class DataUrlUtil {
         return fileData;
     }
 
-    public static byte[] convertToImage(byte[] dbData){
+    public static byte[] convertToBytes(byte[] dbData){
         byte[] fileData = null;
         try {
             String dataUrl = new String(dbData, "UTF-8");
-            fileData = convertToImage(dataUrl);
+            fileData = convertToBytes(dataUrl);
         } catch (Exception e) {
             e.printStackTrace();
         }

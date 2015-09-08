@@ -38,6 +38,10 @@
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
         <property name="mapperInterface" value="com.connehealth.dao.DrugDao" />
     </bean>
+    <bean id="vaccineDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="com.connehealth.dao.VaccineDao" />
+    </bean>
     <bean id="allergenDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
         <property name="mapperInterface" value="com.connehealth.dao.AllergenDao" />
@@ -93,6 +97,18 @@
     <bean id="patientAdverseReactionDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
         <property name="mapperInterface" value="com.connehealth.dao.PatientAdverseReactionDao" />
+    </bean>
+    <bean id="patientMedicalHistoryDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="com.connehealth.dao.PatientMedicalHistoryDao" />
+    </bean>
+    <bean id="patientVaccineDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="com.connehealth.dao.PatientVaccineDao" />
+    </bean>
+    <bean id="patientSocialHistoryDao" class="org.mybatis.spring.mapper.MapperFactoryBean" depends-on="dataSource">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="com.connehealth.dao.PatientSocialHistoryDao" />
     </bean>
 
 </beans>

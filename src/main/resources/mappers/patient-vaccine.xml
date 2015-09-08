@@ -1,0 +1,97 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connehealth.dao.PatientVaccineDao">
+
+    <resultMap id="patientVaccineMap" type="PatientVaccine" >
+        <id property="id" column="patient_vaccine_id"/>
+        <result property="createOn" column="create_on"/>
+        <result property="createBy" column="create_by"/>
+        <result property="modifyOn" column="modify_on"/>
+        <result property="modifyBy" column="modify_by"/>
+        <result property="status" column="status"/>
+
+        <result property="patientId" column="patient_id"/>
+        <result property="vaccineId" column="vaccine_id"/>
+        <result property="vaccineName" column="vaccine_name"/>
+        <result property="times" column="times"/>
+        <result property="dosage" column="dosage"/>
+        <result property="position" column="position"/>
+        <result property="way" column="way"/>
+        <result property="startDate" column="start_date"/>
+        <result property="practiceName" column="practice_name"/>
+        <result property="doctor" column="doctor"/>
+        <result property="batchNo" column="batch_no"/>
+        <result property="manufacturer" column="manufacturer"/>
+        <result property="memo" column="memo"/>
+
+    </resultMap>
+
+    <!-- ************** CREATE ************** -->
+    <insert id="createPatientVaccine" parameterType="PatientVaccine" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO patient_vaccines
+        (create_on, create_by, modify_on, modify_by, status,
+         patient_id,vaccine_id,vaccine_name,times,dosage,position,way,start_date,practice_name,doctor,batch_no,manufacturer,memo)
+        VALUES
+        (#{createOn},#{createBy},#{modifyOn},#{modifyBy},#{status},
+         #{patientId},#{vaccineId},#{vaccineName},#{times},#{form},#{dosage},#{position},#{way},
+         #{startDate},#{practiceName},#{doctor},
+         #{batchNo},#{manufacturer},#{memo})
+    </insert>
+
+    <!-- ************** READ ************** -->
+    <select id="getPatientVaccines" resultMap="patientVaccineMap">
+        SELECT * FROM patient_vaccines
+    </select>
+
+    <select id="getPatientVaccinesByPatient" resultMap="patientVaccineMap" parameterType="Long">
+        SELECT * FROM patient_vaccines WHERE patient_id=#{value};
+    </select>
+
+    <select id="getPatientVaccineById" resultMap="patientVaccineMap" parameterType="Long">
+        SELECT * FROM patient_vaccines WHERE patient_vaccine_id=#{value};
+    </select>
+
+    <!--<select id="getPatientByName" resultMap="PatientMap" parameterType="String">
+        SELECT * FROM Patients WHERE name=#{value};
+    </select>-->
+
+    <!-- ************** UPDATE ************** -->
+    <update id="updatePatientVaccine" parameterType="PatientVaccine">
+        UPDATE
+            patient_vaccines
+        SET
+            patient_vaccine_id=#{id}
+            <if test="createOn !=null">,create_on=#{createOn}</if>
+            <if test="createBy !=null">,create_by=#{createBy}</if>
+            <if test="modifyOn !=null">,modify_on=#{modifyOn}</if>
+            <if test="modifyBy !=null">,modify_by=#{modifyBy}</if>
+            <if test="status !=0">,status=#{status}</if>
+            <if test="patientId !=null">,patient_id=#{patientId}</if>
+            <if test="vaccineId !=null">,vaccine_id=#{vaccineId}</if>
+            <if test="vaccineName !=null">,vaccine_name=#{vaccineName}</if>
+            <if test="times !=null">,times=#{times}</if>
+            <if test="dosage !=null">,dosage=#{dosage}</if>
+            <if test="position !=null">,position=#{position}</if>
+            <if test="way !=null">,way=#{way}</if>
+            <if test="startDate !=null">,start_date=#{startDate}</if>
+            <if test="practiceName !=null">,practice_name=#{practiceName}</if>
+            <if test="doctor !=null">,doctor=#{doctor}</if>
+            <if test="batchNo !=null">,batch_no=#{batchNo}</if>
+            <if test="manufacturer !=null">,manufacturer=#{manufacturer}</if>
+            <if test="memo !=null">,memo=#{memo}</if>
+        WHERE
+            patient_vaccine_id = #{id}
+    </update>
+
+    <!-- ************** DELETE ************** -->
+    <delete id="deletePatientVaccineById" parameterType="Long">
+        DELETE FROM patient_vaccines WHERE patient_vaccine_id = #{value}
+    </delete>
+
+    <!-- DELETE all -->
+    <delete id="deletePatientVaccines">
+        TRUNCATE TABLE patient_vaccines
+    </delete>
+
+</mapper>

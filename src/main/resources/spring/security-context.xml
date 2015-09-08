@@ -38,6 +38,9 @@
 
         <security:intercept-url method="GET" pattern="/rest/master/icd/**" access="hasRole('ROLE_USER')" />
         <security:intercept-url method="GET" pattern="/rest/master/drug/**" access="hasRole('ROLE_USER')" />
+        <!--<security:intercept-url method="GET" pattern="/rest/master/vaccine/**" access="hasRole('ROLE_USER')" />-->
+        <security:intercept-url method="GET" pattern="/rest/master/adverse-reaction/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="GET" pattern="/rest/master/allergen/**" access="hasRole('ROLE_USER')" />
         <security:intercept-url method="GET" pattern="/rest/master/**" access="permitAll" />
         <security:intercept-url method="PUT" pattern="/rest/master/**" access="hasRole('ROLE_ADMIN')" />
         <security:intercept-url method="POST" pattern="/rest/master/**" access="hasRole('ROLE_ADMIN')" />
@@ -88,6 +91,31 @@
         <security:intercept-url method="PUT" pattern="/rest/patient-problems/**" access="hasRole('ROLE_USER')" />
         <security:intercept-url method="POST" pattern="/rest/patient-problems/**" access="hasRole('ROLE_USER')" />
         <security:intercept-url method="DELETE" pattern="/rest/patient-problems/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/patient-medications/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/patient-medications/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/patient-medications/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/patient-medications/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/patient-allergies/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/patient-allergies/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/patient-allergies/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/patient-allergies/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/patient-medical-histories/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/patient-medical-histories/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/patient-medical-histories/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/patient-medical-histories/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/patient-vaccines/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/patient-vaccines/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/patient-vaccines/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/patient-vaccines/**" access="hasRole('ROLE_USER')" />
+
+        <security:intercept-url method="GET" pattern="/rest/patient-social-histories/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="PUT" pattern="/rest/patient-social-histories/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="POST" pattern="/rest/patient-social-histories/**" access="hasRole('ROLE_USER')" />
+        <security:intercept-url method="DELETE" pattern="/rest/patient-social-histories/**" access="hasRole('ROLE_USER')" />
     </security:http>
     <bean id="unauthorizedEntryPoint" class="com.connehealth.security.UnauthorizedEntryPoint" />
 
